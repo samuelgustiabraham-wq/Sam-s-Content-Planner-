@@ -4,6 +4,13 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Sam's Scrapbook Content Planner</title>
+  <!-- Apple iOS Web App & Home Screen Meta -->
+  <meta name="apple-mobile-web-app-capable" content="yes" />
+  <meta name="apple-mobile-web-app-status-bar-style" content="default" />
+  <meta name="apple-mobile-web-app-title" content="Sam's Planner" />
+  <meta name="theme-color" content="#FAF6E8" />
+  <link id="dynamic-favicon" rel="icon" type="image/png" />
+  <link id="dynamic-apple-icon" rel="apple-touch-icon" sizes="180x180" />
   <!-- Google Fonts: Fredoka (Retro Rounded Display) & Nunito (Clean Legible Body) -->
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -1588,7 +1595,189 @@
       if (activeTab === 'vault') renderVault();
     }
 
+    // =========================================================================
+    // 11. DYNAMIC SCRAPBOOK FAVICON & IPHONE HOME SCREEN ICON GENERATOR
+    // =========================================================================
+    function generateAppIcons() {
+      try {
+        const size = 512;
+        const canvas = document.createElement('canvas');
+        canvas.width = size;
+        canvas.height = size;
+        const ctx = canvas.getContext('2d');
+        if (!ctx) return;
+
+        // 1. Cream Grid Paper Background
+        ctx.fillStyle = '#FAF6E8';
+        ctx.fillRect(0, 0, size, size);
+
+        ctx.strokeStyle = '#E6DFC8';
+        ctx.lineWidth = 2;
+        const step = 32;
+        for (let x = 0; x <= size; x += step) {
+          ctx.beginPath();
+          ctx.moveTo(x, 0);
+          ctx.lineTo(x, size);
+          ctx.stroke();
+        }
+        for (let y = 0; y <= size; y += step) {
+          ctx.beginPath();
+          ctx.moveTo(0, y);
+          ctx.lineTo(size, y);
+          ctx.stroke();
+        }
+
+        // 2. Top Bunting Flags
+        ctx.strokeStyle = '#1D2D44';
+        ctx.lineWidth = 3;
+        ctx.beginPath();
+        ctx.moveTo(0, 14);
+        ctx.quadraticCurveTo(size / 2, 26, size, 14);
+        ctx.stroke();
+
+        const flagColors = ['#FF6B4A', '#9AE17B', '#FFF3B0', '#1982C4'];
+        const flagCount = 9;
+        const flagW = size / flagCount;
+        for (let i = 0; i < flagCount; i++) {
+          const fx = i * flagW + 6;
+          const fw = flagW - 12;
+          ctx.fillStyle = flagColors[i % flagColors.length];
+          ctx.beginPath();
+          ctx.moveTo(fx, 18);
+          ctx.lineTo(fx + fw, 18);
+          ctx.lineTo(fx + fw / 2, 52);
+          ctx.closePath();
+          ctx.fill();
+          ctx.stroke();
+        }
+
+        // 3. Central Scrapbook Sticker Card
+        const cardX = 56, cardY = 82, cardW = 400, cardH = 384, rad = 52;
+        ctx.save();
+        ctx.shadowColor = 'rgba(29, 45, 68, 0.22)';
+        ctx.shadowBlur = 16;
+        ctx.shadowOffsetY = 8;
+
+        // Outer white die-cut sticker border
+        ctx.fillStyle = '#FFFFFF';
+        ctx.beginPath();
+        ctx.roundRect(cardX - 10, cardY - 10, cardW + 20, cardH + 20, rad + 8);
+        ctx.fill();
+        ctx.restore();
+
+        // Inner cream note card
+        ctx.fillStyle = '#FCF9EE';
+        ctx.strokeStyle = '#1D2D44';
+        ctx.lineWidth = 5;
+        ctx.beginPath();
+        ctx.roundRect(cardX, cardY, cardW, cardH, rad);
+        ctx.fill();
+        ctx.stroke();
+
+        // Dashed inner stitch border
+        ctx.save();
+        ctx.setLineDash([12, 10]);
+        ctx.strokeStyle = '#60A5FA';
+        ctx.lineWidth = 3.5;
+        ctx.beginPath();
+        ctx.roundRect(cardX + 16, cardY + 16, cardW - 32, cardH - 32, rad - 12);
+        ctx.stroke();
+        ctx.restore();
+
+        // Folded bottom-left yellow corner accent
+        ctx.fillStyle = '#FACC15';
+        ctx.strokeStyle = '#1D2D44';
+        ctx.lineWidth = 4;
+        ctx.beginPath();
+        ctx.moveTo(cardX + 8, cardY + cardH - 54);
+        ctx.lineTo(cardX + 58, cardY + cardH - 8);
+        ctx.lineTo(cardX + 24, cardY + cardH - 8);
+        ctx.closePath();
+        ctx.fill();
+        ctx.stroke();
+
+        // Top-right Cloud Sync Badge
+        ctx.fillStyle = '#E0F2FE';
+        ctx.strokeStyle = '#1D2D44';
+        ctx.lineWidth = 4.5;
+        ctx.beginPath();
+        ctx.roundRect(356, 62, 106, 58, 29);
+        ctx.fill();
+        ctx.stroke();
+
+        ctx.strokeStyle = '#2563EB';
+        ctx.lineWidth = 4;
+        ctx.beginPath();
+        ctx.arc(409, 91, 14, 0.2 * Math.PI, 1.1 * Math.PI);
+        ctx.stroke();
+        ctx.beginPath();
+        ctx.arc(409, 91, 14, 1.2 * Math.PI, 0.1 * Math.PI);
+        ctx.stroke();
+
+        // Top Platform Badges (TikTok & YouTube)
+        // TikTok note symbol
+        ctx.fillStyle = '#1D2D44';
+        ctx.font = 'bold 46px sans-serif';
+        ctx.textAlign = 'center';
+        ctx.textBaseline = 'middle';
+        ctx.fillText('♪', 188, 144);
+
+        // YouTube coral rounded play box
+        ctx.fillStyle = '#FF6B4A';
+        ctx.strokeStyle = '#1D2D44';
+        ctx.lineWidth = 4;
+        ctx.beginPath();
+        ctx.roundRect(274, 120, 68, 46, 14);
+        ctx.fill();
+        ctx.stroke();
+        ctx.fillStyle = '#FFFFFF';
+        ctx.beginPath();
+        ctx.moveTo(301, 133);
+        ctx.lineTo(301, 153);
+        ctx.lineTo(319, 143);
+        ctx.closePath();
+        ctx.fill();
+
+        // Main Title Typography: SAM'S CONTENT PLANNER
+        ctx.fillStyle = '#2563EB';
+        ctx.font = '900 76px "Fredoka", "Nunito", sans-serif';
+        ctx.fillText("SAM'S", size / 2, 224);
+
+        ctx.fillStyle = '#F97352';
+        ctx.font = '800 44px "Fredoka", "Nunito", sans-serif';
+        ctx.fillText('CONTENT', size / 2, 286);
+        ctx.fillText('PLANNER', size / 2, 334);
+
+        // Bottom Platform Badges (Instagram & Threads @)
+        ctx.strokeStyle = '#1D2D44';
+        ctx.lineWidth = 4;
+        ctx.beginPath();
+        ctx.roundRect(184, 376, 46, 46, 13);
+        ctx.stroke();
+        ctx.beginPath();
+        ctx.arc(207, 399, 11, 0, Math.PI * 2);
+        ctx.stroke();
+        ctx.fillStyle = '#1D2D44';
+        ctx.beginPath();
+        ctx.arc(220, 386, 3, 0, Math.PI * 2);
+        ctx.fill();
+
+        ctx.fillStyle = '#1D2D44';
+        ctx.font = 'bold 44px sans-serif';
+        ctx.fillText('@', 306, 400);
+
+        const pngDataUrl = canvas.toDataURL('image/png');
+        const favLink = document.getElementById('dynamic-favicon');
+        const appleLink = document.getElementById('dynamic-apple-icon');
+        if (favLink) favLink.href = pngDataUrl;
+        if (appleLink) appleLink.href = pngDataUrl;
+      } catch (e) {
+        console.warn('Gagal membuat ikon dinamis:', e);
+      }
+    }
+
     window.addEventListener('DOMContentLoaded', () => {
+      generateAppIcons();
       renderAll();
       if (sheetsApiUrl) {
         pullFromCloud(true);
