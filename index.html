@@ -1,0 +1,1601 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Sam's Scrapbook Content Planner</title>
+  <!-- Google Fonts: Fredoka (Retro Rounded Display) & Nunito (Clean Legible Body) -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Fredoka:wght@500;600;700&family=Nunito:wght@500;600;700;800&display=swap" rel="stylesheet">
+  <!-- Tailwind CSS -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          fontFamily: {
+            display: ['Fredoka', 'sans-serif'],
+            sans: ['Nunito', 'sans-serif'],
+          },
+          colors: {
+            cream: '#FAF6E8',
+            gridLine: '#E6DFC8',
+            cobalt: '#1982C4',
+            cobaltDark: '#126396',
+            coral: '#FF6B4A',
+            limeSticker: '#9AE17B',
+            stickyYellow: '#FFF3B0',
+            ink: '#1D2D44',
+          },
+          boxShadow: {
+            sticker: '0 4px 0 #1D2D44',
+            stickerSm: '0 2px 0 #1D2D44',
+            stickerLg: '0 6px 0 #1D2D44',
+          }
+        }
+      }
+    }
+  </script>
+  <style>
+    /* Retro Grid Graph Paper Background */
+    body {
+      background-color: #FAF6E8;
+      background-image:
+        linear-gradient(to right, #E6DFC8 1px, transparent 1px),
+        linear-gradient(to bottom, #E6DFC8 1px, transparent 1px);
+      background-size: 24px 24px;
+      color: #1D2D44;
+    }
+
+    /* Tactile Sticker Button Press Effect */
+    .btn-tactile {
+      transition: transform 0.1s ease, box-shadow 0.1s ease;
+    }
+    .btn-tactile:active {
+      transform: translateY(2px);
+      box-shadow: 0 1px 0 #1D2D44 !important;
+    }
+
+    /* Custom Scrollbar for horizontal pills & calendar cells */
+    ::-webkit-scrollbar {
+      height: 6px;
+      width: 6px;
+    }
+    ::-webkit-scrollbar-track {
+      background: rgba(230, 223, 200, 0.4);
+      border-radius: 999px;
+    }
+    ::-webkit-scrollbar-thumb {
+      background: #1D2D44;
+      border-radius: 999px;
+    }
+  </style>
+</head>
+<body class="font-sans antialiased min-h-screen pb-16 selection:bg-stickyYellow selection:text-ink">
+
+  <!-- TOP BUNTING FLAGS DECORATION -->
+  <div class="w-full overflow-hidden pointer-events-none select-none">
+    <svg class="w-full h-9 sm:h-11" viewBox="0 0 1200 44" preserveAspectRatio="none" aria-hidden="true">
+      <path d="M0,2 Q300,18 600,4 T1200,6" fill="none" stroke="#1D2D44" stroke-width="2.5" />
+      <polygon points="30,4 70,7 48,34" fill="#FF6B4A" stroke="#1D2D44" stroke-width="2" />
+      <polygon points="90,8 130,10 108,37" fill="#9AE17B" stroke="#1D2D44" stroke-width="2" />
+      <polygon points="150,11 190,12 168,39" fill="#FFF3B0" stroke="#1D2D44" stroke-width="2" />
+      <polygon points="210,13 250,14 228,40" fill="#1982C4" stroke="#1D2D44" stroke-width="2" />
+      <polygon points="270,14 310,14 288,41" fill="#FF6B4A" stroke="#1D2D44" stroke-width="2" />
+      <polygon points="330,13 370,12 348,39" fill="#9AE17B" stroke="#1D2D44" stroke-width="2" />
+      <polygon points="390,11 430,10 408,37" fill="#FFF3B0" stroke="#1D2D44" stroke-width="2" />
+      <polygon points="450,9 490,7 468,34" fill="#1982C4" stroke="#1D2D44" stroke-width="2" />
+      <polygon points="510,6 550,5 528,32" fill="#FF6B4A" stroke="#1D2D44" stroke-width="2" />
+      <polygon points="570,4 610,4 588,31" fill="#9AE17B" stroke="#1D2D44" stroke-width="2" />
+      <polygon points="630,4 670,5 648,32" fill="#FFF3B0" stroke="#1D2D44" stroke-width="2" />
+      <polygon points="690,6 730,8 708,35" fill="#1982C4" stroke="#1D2D44" stroke-width="2" />
+      <polygon points="750,9 790,11 768,38" fill="#FF6B4A" stroke="#1D2D44" stroke-width="2" />
+      <polygon points="810,12 850,13 828,40" fill="#9AE17B" stroke="#1D2D44" stroke-width="2" />
+      <polygon points="870,14 910,14 888,41" fill="#FFF3B0" stroke="#1D2D44" stroke-width="2" />
+      <polygon points="930,14 970,13 948,40" fill="#1982C4" stroke="#1D2D44" stroke-width="2" />
+      <polygon points="990,12 1030,11 1008,38" fill="#FF6B4A" stroke="#1D2D44" stroke-width="2" />
+      <polygon points="1050,10 1090,8 1068,35" fill="#9AE17B" stroke="#1D2D44" stroke-width="2" />
+      <polygon points="1110,7 1150,6 1128,33" fill="#FFF3B0" stroke="#1D2D44" stroke-width="2" />
+    </svg>
+  </div>
+
+  <!-- MAIN CONTAINER -->
+  <div class="max-w-6xl mx-auto px-4 sm:px-6 pt-2">
+
+    <!-- SCRAPBOOK HEADER CARD -->
+    <header class="relative bg-cobalt text-white rounded-3xl border-[3px] border-ink shadow-stickerLg p-5 sm:p-7 mb-6">
+      <!-- Top Binder Clip SVG -->
+      <div class="hidden sm:flex absolute -top-5 left-1/2 -translate-x-1/2 items-center justify-center pointer-events-none">
+        <svg class="w-12 h-10" viewBox="0 0 64 52" fill="none">
+          <path d="M22 18V10C22 6.68629 24.6863 4 28 4H36C39.3137 4 42 6.68629 42 10V18" stroke="#1D2D44" stroke-width="3" stroke-linecap="round"/>
+          <rect x="14" y="16" width="36" height="24" rx="5" fill="#9AE17B" stroke="#1D2D44" stroke-width="3"/>
+          <path d="M18 24H46" stroke="#1D2D44" stroke-width="2.5" stroke-linecap="round"/>
+        </svg>
+      </div>
+
+      <!-- Decorative Floating Stickers -->
+      <div class="hidden md:flex absolute -top-3 -left-3 -rotate-6 bg-coral text-white font-display font-bold text-xs px-3 py-1 rounded-full border-2 border-ink shadow-stickerSm">
+        ✦ MULTI-ACCOUNT HUB
+      </div>
+      <div class="hidden md:flex absolute -bottom-3 right-6 rotate-3 bg-stickyYellow text-ink font-display font-bold text-xs px-3 py-1 rounded-full border-2 border-ink shadow-stickerSm">
+        📎 SCRAPBOOK EDITION
+      </div>
+
+      <div class="flex flex-col lg:flex-row lg:items-center lg:justify-between gap-4">
+        <div>
+          <div class="flex flex-wrap items-center gap-2 mb-2">
+            <div id="greeting-badge" class="inline-flex items-center gap-1.5 bg-stickyYellow text-ink px-3 py-1 rounded-full border-2 border-ink shadow-stickerSm text-xs font-extrabold">
+              <span>👋 Halo, Sam!</span>
+            </div>
+            <button onclick="manualCloudPull()" id="sync-status-badge" title="Klik untuk tarik data terbaru dari Google Sheets" class="btn-tactile inline-flex items-center gap-1.5 bg-white text-ink px-3 py-1 rounded-full border-2 border-ink shadow-stickerSm text-xs font-extrabold hover:bg-stickyYellow">
+              <span id="sync-status-dot" class="w-2 h-2 rounded-full bg-amber-400"></span>
+              <span id="sync-status-text">Local Mode</span>
+            </button>
+          </div>
+          <h1 class="font-display text-3xl sm:text-4xl font-bold tracking-tight drop-shadow-[0_2px_0_#1D2D44]">
+            CONTENT PLANNER
+          </h1>
+          <p id="greeting-subtext" class="text-white/95 text-sm sm:text-base font-semibold mt-1">
+            Siap merancang ide konten, referensi link, jadwal kalender multi-platform, & info akun hari ini?
+          </p>
+        </div>
+
+        <!-- Quick Summary Badges -->
+        <div class="flex flex-wrap items-center gap-2.5">
+          <div class="bg-stickyYellow text-ink px-3.5 py-2 rounded-2xl border-2 border-ink shadow-stickerSm text-center min-w-[82px]">
+            <div id="stat-total" class="font-display text-xl font-bold leading-none">0</div>
+            <div class="text-[11px] font-extrabold uppercase mt-0.5">Total Ide</div>
+          </div>
+          <div class="bg-limeSticker text-ink px-3.5 py-2 rounded-2xl border-2 border-ink shadow-stickerSm text-center min-w-[82px]">
+            <div id="stat-published" class="font-display text-xl font-bold leading-none">0</div>
+            <div class="text-[11px] font-extrabold uppercase mt-0.5">Published</div>
+          </div>
+          <div class="bg-white text-ink px-3.5 py-2 rounded-2xl border-2 border-ink shadow-stickerSm text-center min-w-[82px]">
+            <div id="stat-accounts" class="font-display text-xl font-bold leading-none">0</div>
+            <div class="text-[11px] font-extrabold uppercase mt-0.5">Akun Aktif</div>
+          </div>
+        </div>
+      </div>
+    </header>
+
+    <!-- MULTI-ACCOUNT TWO-TIER FILTER BAR -->
+    <section aria-label="Filter Platform dan Akun" class="mb-6">
+      <div class="flex items-center justify-between mb-2 px-1">
+        <span class="text-xs font-extrabold uppercase tracking-wider text-ink/80 flex items-center gap-1.5">
+          <svg class="w-4 h-4 text-coral" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M21.44 11.05l-9.19 9.19a6 6 0 0 1-8.49-8.49l9.19-9.19a4 4 0 0 1 5.66 5.66l-9.2 9.19a2 2 0 0 1-2.83-2.83l8.49-8.48"/>
+          </svg>
+          Filter Bertingkat (Platform & Akun):
+        </span>
+      </div>
+
+      <!-- TIER 1: Platform Filter Pills -->
+      <div id="platform-filter-bar" class="flex items-center gap-2 overflow-x-auto pb-2 pt-0.5 px-0.5">
+        <!-- Populated by JS -->
+      </div>
+
+      <!-- TIER 2: Specific Account Index-Card Container -->
+      <div class="bg-white/95 rounded-2xl border-2 border-ink shadow-stickerSm p-3 mt-1">
+        <div class="flex items-center justify-between mb-2 px-1">
+          <span id="tier2-label" class="text-[11px] font-extrabold uppercase tracking-wider text-ink/65">
+            📌 Daftar Akun:
+          </span>
+          <span id="tier2-count" class="text-[11px] font-extrabold text-cobalt bg-cobalt/10 px-2 py-0.5 rounded-full">
+            10 Akun
+          </span>
+        </div>
+        <div id="account-filter-bar" class="flex flex-nowrap sm:flex-wrap items-center gap-2 overflow-x-auto sm:overflow-visible pb-1 sm:pb-0">
+          <!-- Populated by JS -->
+        </div>
+      </div>
+    </section>
+
+    <!-- MAIN NAVIGATION TABS & PRIMARY CTA -->
+    <nav class="flex flex-col sm:flex-row sm:items-center justify-between gap-3 bg-white rounded-3xl border-[2.5px] border-ink shadow-sticker p-2.5 mb-6">
+      <div class="grid grid-cols-3 sm:flex items-center gap-1.5 sm:gap-2">
+        <button onclick="switchTab('tracker')" id="tab-btn-tracker" class="btn-tactile flex items-center justify-center gap-1.5 px-3 sm:px-4 py-2.5 rounded-2xl font-display font-semibold text-xs sm:text-sm border-2 border-ink bg-cobalt text-white shadow-stickerSm">
+          <span>📋</span>
+          <span>Content Tracker</span>
+        </button>
+        <button onclick="switchTab('calendar')" id="tab-btn-calendar" class="btn-tactile flex items-center justify-center gap-1.5 px-3 sm:px-4 py-2.5 rounded-2xl font-display font-semibold text-xs sm:text-sm border-2 border-transparent text-ink hover:bg-cream">
+          <span>📅</span>
+          <span>Calendar View</span>
+        </button>
+        <button onclick="switchTab('vault')" id="tab-btn-vault" class="btn-tactile flex items-center justify-center gap-1.5 px-3 sm:px-4 py-2.5 rounded-2xl font-display font-semibold text-xs sm:text-sm border-2 border-transparent text-ink hover:bg-cream">
+          <span>🔒</span>
+          <span>Account Vault</span>
+        </button>
+      </div>
+
+      <button onclick="openContentModal()" class="btn-tactile flex items-center justify-center gap-2 px-4 py-2.5 rounded-2xl bg-coral text-white font-display font-semibold text-sm border-2 border-ink shadow-stickerSm hover:brightness-105">
+        <span class="text-base leading-none">+</span>
+        <span>Tambah Ide Konten</span>
+      </button>
+    </nav>
+
+    <!-- ===================================================================== -->
+    <!-- VIEW 1: CONTENT TRACKER                                               -->
+    <!-- ===================================================================== -->
+    <main id="view-tracker" class="space-y-4">
+      <!-- Status Quick Filter & Search Bar -->
+      <div class="flex flex-col md:flex-row md:items-center justify-between gap-3 bg-stickyYellow/85 p-3.5 rounded-2xl border-2 border-ink shadow-stickerSm">
+        <div class="flex flex-wrap items-center gap-1.5" id="status-filter-pills">
+          <button onclick="setStatusFilter('ALL')" data-status="ALL" class="status-pill px-3 py-1 rounded-full text-xs font-extrabold border-2 border-ink bg-ink text-white">Semua Status</button>
+          <button onclick="setStatusFilter('Idea')" data-status="Idea" class="status-pill px-3 py-1 rounded-full text-xs font-extrabold border-2 border-ink/30 bg-white text-ink hover:border-ink">💡 Idea</button>
+          <button onclick="setStatusFilter('Scripting')" data-status="Scripting" class="status-pill px-3 py-1 rounded-full text-xs font-extrabold border-2 border-ink/30 bg-white text-ink hover:border-ink">✍️ Scripting</button>
+          <button onclick="setStatusFilter('Editing')" data-status="Editing" class="status-pill px-3 py-1 rounded-full text-xs font-extrabold border-2 border-ink/30 bg-white text-ink hover:border-ink">🎬 Editing</button>
+          <button onclick="setStatusFilter('Ready to Post')" data-status="Ready to Post" class="status-pill px-3 py-1 rounded-full text-xs font-extrabold border-2 border-ink/30 bg-white text-ink hover:border-ink">🚀 Ready to Post</button>
+          <button onclick="setStatusFilter('Published')" data-status="Published" class="status-pill px-3 py-1 rounded-full text-xs font-extrabold border-2 border-ink/30 bg-white text-ink hover:border-ink">✅ Published</button>
+        </div>
+
+        <div class="relative w-full md:w-64">
+          <input type="text" id="search-input" oninput="renderTracker()" placeholder="Cari judul atau catatan..." class="w-full pl-9 pr-3 py-1.5 rounded-xl bg-white border-2 border-ink text-xs font-bold focus:outline-none focus:ring-2 focus:ring-cobalt" />
+          <svg class="w-4 h-4 text-ink/60 absolute left-3 top-1/2 -translate-y-1/2" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
+            <circle cx="11" cy="11" r="8"/><path d="m21 21-4.3-4.3"/>
+          </svg>
+        </div>
+      </div>
+
+      <!-- Content Cards List -->
+      <div id="tracker-list" class="grid grid-cols-1 gap-4">
+        <!-- Populated by JS -->
+      </div>
+    </main>
+
+    <!-- ===================================================================== -->
+    <!-- VIEW 2: MONTHLY CALENDAR VIEW                                         -->
+    <!-- ===================================================================== -->
+    <section id="view-calendar" class="hidden">
+      <div class="bg-white rounded-3xl border-[2.5px] border-ink shadow-sticker p-4 sm:p-6">
+        <!-- Calendar Header Controls -->
+        <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-3 pb-4 mb-4 border-b-2 border-dashed border-ink/20">
+          <div class="flex items-center gap-3">
+            <button onclick="changeMonth(-1)" class="btn-tactile w-9 h-9 rounded-xl bg-cream border-2 border-ink shadow-stickerSm flex items-center justify-center font-extrabold hover:bg-stickyYellow" aria-label="Bulan Sebelumnya">
+              ◀
+            </button>
+            <h2 id="calendar-month-label" class="font-display text-xl sm:text-2xl font-bold text-ink min-w-[175px] text-center">
+              Bulan Tahun
+            </h2>
+            <button onclick="changeMonth(1)" class="btn-tactile w-9 h-9 rounded-xl bg-cream border-2 border-ink shadow-stickerSm flex items-center justify-center font-extrabold hover:bg-stickyYellow" aria-label="Bulan Berikutnya">
+              ▶
+            </button>
+          </div>
+
+          <div class="flex flex-wrap items-center gap-2 text-[11px] font-extrabold">
+            <span class="inline-flex items-center gap-1 px-2 py-0.5 rounded-full bg-[#FEF08A] text-[#854D0E] border border-[#CA8A04]">
+              <span class="w-2 h-2 rounded-full bg-[#CA8A04]"></span> Idea
+            </span>
+            <span class="inline-flex items-center gap-1 px-2 py-0.5 rounded-full bg-[#BAE6FD] text-[#075985] border border-[#0284C7]">
+              <span class="w-2 h-2 rounded-full bg-[#0284C7]"></span> Scripting
+            </span>
+            <span class="inline-flex items-center gap-1 px-2 py-0.5 rounded-full bg-[#E9D5FF] text-[#6B21A8] border border-[#9333EA]">
+              <span class="w-2 h-2 rounded-full bg-[#9333EA]"></span> Editing
+            </span>
+            <span class="inline-flex items-center gap-1 px-2 py-0.5 rounded-full bg-[#FED7AA] text-[#9A3412] border border-[#EA580C]">
+              <span class="w-2 h-2 rounded-full bg-[#EA580C]"></span> Ready to Post
+            </span>
+            <span class="inline-flex items-center gap-1 px-2 py-0.5 rounded-full bg-[#D9F99D] text-[#3F6212] border border-[#65A30D]">
+              <span class="w-2 h-2 rounded-full bg-[#65A30D]"></span> Published
+            </span>
+            <button onclick="goToToday()" class="btn-tactile px-3 py-1.5 rounded-xl bg-cobalt text-white border-2 border-ink shadow-stickerSm ml-1">
+              Bulan Ini
+            </button>
+          </div>
+        </div>
+
+        <!-- Horizontal Scroll Wrapper for Mobile -->
+        <div class="overflow-x-auto pb-2">
+          <div class="min-w-[700px]">
+            <!-- Days of Week Header -->
+            <div class="grid grid-cols-7 gap-2 mb-2 text-center font-display font-bold text-xs uppercase tracking-wider text-ink/70">
+              <div class="py-1.5 bg-coral/15 rounded-xl border border-ink/20 text-coral">Min</div>
+              <div class="py-1.5 bg-cream rounded-xl border border-ink/20">Sen</div>
+              <div class="py-1.5 bg-cream rounded-xl border border-ink/20">Sel</div>
+              <div class="py-1.5 bg-cream rounded-xl border border-ink/20">Rab</div>
+              <div class="py-1.5 bg-cream rounded-xl border border-ink/20">Kam</div>
+              <div class="py-1.5 bg-cream rounded-xl border border-ink/20">Jum</div>
+              <div class="py-1.5 bg-cobalt/15 rounded-xl border border-ink/20 text-cobalt">Sab</div>
+            </div>
+
+            <!-- Calendar Grid Cells -->
+            <div id="calendar-grid" class="grid grid-cols-7 gap-2">
+              <!-- Populated by JS -->
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ===================================================================== -->
+    <!-- VIEW 3: PRIVATE ACCOUNT VAULT (PIN PROTECTED)                         -->
+    <!-- ===================================================================== -->
+    <section id="view-vault" class="hidden">
+      <!-- LOCKED STATE -->
+      <div id="vault-locked-screen" class="max-w-md mx-auto bg-white rounded-3xl border-[3px] border-ink shadow-stickerLg p-6 sm:p-8 text-center">
+        <div class="w-16 h-16 mx-auto mb-3 rounded-2xl bg-stickyYellow border-2 border-ink shadow-stickerSm flex items-center justify-center text-3xl">
+          🔐
+        </div>
+        <h2 class="font-display text-2xl font-bold text-ink">Private Account Vault</h2>
+        <p class="text-xs sm:text-sm font-semibold text-ink/75 mt-1 mb-4">
+          Masukkan PIN 6-digit untuk membuka info login (email & password) semua akunmu.
+        </p>
+
+        <!-- PIN Dots Display -->
+        <div class="flex justify-center gap-2.5 mb-2">
+          <div id="pin-dot-0" class="w-4 h-4 rounded-full border-2 border-ink bg-cream"></div>
+          <div id="pin-dot-1" class="w-4 h-4 rounded-full border-2 border-ink bg-cream"></div>
+          <div id="pin-dot-2" class="w-4 h-4 rounded-full border-2 border-ink bg-cream"></div>
+          <div id="pin-dot-3" class="w-4 h-4 rounded-full border-2 border-ink bg-cream"></div>
+          <div id="pin-dot-4" class="w-4 h-4 rounded-full border-2 border-ink bg-cream"></div>
+          <div id="pin-dot-5" class="w-4 h-4 rounded-full border-2 border-ink bg-cream"></div>
+        </div>
+        <div id="pin-error-msg" class="text-xs font-extrabold text-coral h-5 mb-3"></div>
+
+        <!-- Keypad -->
+        <div class="grid grid-cols-3 gap-2.5 max-w-[240px] mx-auto mb-2">
+          <button onclick="pressPin('1')" class="btn-tactile py-3 rounded-2xl bg-cream border-2 border-ink shadow-stickerSm font-display text-lg font-bold hover:bg-stickyYellow">1</button>
+          <button onclick="pressPin('2')" class="btn-tactile py-3 rounded-2xl bg-cream border-2 border-ink shadow-stickerSm font-display text-lg font-bold hover:bg-stickyYellow">2</button>
+          <button onclick="pressPin('3')" class="btn-tactile py-3 rounded-2xl bg-cream border-2 border-ink shadow-stickerSm font-display text-lg font-bold hover:bg-stickyYellow">3</button>
+          <button onclick="pressPin('4')" class="btn-tactile py-3 rounded-2xl bg-cream border-2 border-ink shadow-stickerSm font-display text-lg font-bold hover:bg-stickyYellow">4</button>
+          <button onclick="pressPin('5')" class="btn-tactile py-3 rounded-2xl bg-cream border-2 border-ink shadow-stickerSm font-display text-lg font-bold hover:bg-stickyYellow">5</button>
+          <button onclick="pressPin('6')" class="btn-tactile py-3 rounded-2xl bg-cream border-2 border-ink shadow-stickerSm font-display text-lg font-bold hover:bg-stickyYellow">6</button>
+          <button onclick="pressPin('7')" class="btn-tactile py-3 rounded-2xl bg-cream border-2 border-ink shadow-stickerSm font-display text-lg font-bold hover:bg-stickyYellow">7</button>
+          <button onclick="pressPin('8')" class="btn-tactile py-3 rounded-2xl bg-cream border-2 border-ink shadow-stickerSm font-display text-lg font-bold hover:bg-stickyYellow">8</button>
+          <button onclick="pressPin('9')" class="btn-tactile py-3 rounded-2xl bg-cream border-2 border-ink shadow-stickerSm font-display text-lg font-bold hover:bg-stickyYellow">9</button>
+          <button onclick="clearPin()" class="btn-tactile py-3 rounded-2xl bg-coral/20 border-2 border-ink shadow-stickerSm font-extrabold text-xs hover:bg-coral/30">CLEAR</button>
+          <button onclick="pressPin('0')" class="btn-tactile py-3 rounded-2xl bg-cream border-2 border-ink shadow-stickerSm font-display text-lg font-bold hover:bg-stickyYellow">0</button>
+          <button onclick="backspacePin()" class="btn-tactile py-3 rounded-2xl bg-cream border-2 border-ink shadow-stickerSm font-extrabold text-sm hover:bg-stickyYellow">⌫</button>
+        </div>
+      </div>
+
+      <!-- UNLOCKED STATE -->
+      <div id="vault-unlocked-screen" class="hidden space-y-4">
+        <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-3 bg-white rounded-3xl border-[2.5px] border-ink shadow-sticker p-4 sm:p-5">
+          <div>
+            <div class="inline-flex items-center gap-1.5 bg-limeSticker px-2.5 py-0.5 rounded-full border border-ink text-[11px] font-extrabold mb-1">
+              🔓 UNLOCKED SESSION
+            </div>
+            <h2 class="font-display text-xl sm:text-2xl font-bold text-ink">Daftar Akun & Kredensial Login</h2>
+            <p class="text-xs font-semibold text-ink/70">Simpan email dan password setiap akun secara rapi. Klik "Kunci Vault" saat selesai.</p>
+          </div>
+
+          <div class="flex items-center gap-2">
+            <button onclick="openAccountModal()" class="btn-tactile px-4 py-2 rounded-2xl bg-limeSticker text-ink border-2 border-ink shadow-stickerSm font-display font-semibold text-xs sm:text-sm hover:brightness-95">
+              + Tambah Akun
+            </button>
+            <button onclick="lockVault()" class="btn-tactile px-4 py-2 rounded-2xl bg-coral text-white border-2 border-ink shadow-stickerSm font-display font-semibold text-xs sm:text-sm hover:brightness-105">
+              🔒 Kunci Vault
+            </button>
+          </div>
+        </div>
+
+        <!-- GOOGLE SHEETS CLOUD SYNC CONFIG CARD -->
+        <div class="bg-stickyYellow/90 rounded-3xl border-[2.5px] border-ink shadow-sticker p-4 sm:p-5">
+          <div class="flex flex-col md:flex-row md:items-center justify-between gap-3">
+            <div>
+              <h3 class="font-display text-lg font-bold text-ink flex items-center gap-1.5">
+                <span>☁️ Google Sheets Auto-Sync (Laptop & HP)</span>
+              </h3>
+              <p class="text-xs font-semibold text-ink/75 mt-0.5">
+                Tempel Web App URL dari Google Apps Script di bawah agar semua ide konten & akun otomatis tersinkronisasi lintas perangkat.
+              </p>
+            </div>
+            <div class="flex flex-col sm:flex-row items-stretch sm:items-center gap-2 w-full md:w-auto">
+              <input type="url" id="sheets-url-input" placeholder="https://script.google.com/macros/s/.../exec" class="w-full sm:w-72 px-3 py-2 rounded-xl bg-white border-2 border-ink font-semibold text-xs focus:outline-none focus:ring-2 focus:ring-cobalt" />
+              <button onclick="saveSheetsUrl()" class="btn-tactile px-4 py-2 rounded-xl bg-cobalt text-white border-2 border-ink shadow-stickerSm font-display font-semibold text-xs shrink-0 hover:brightness-105">
+                💾 Simpan & Sync
+              </button>
+            </div>
+          </div>
+        </div>
+
+        <!-- Vault Account Cards Grid -->
+        <div id="vault-accounts-grid" class="grid grid-cols-1 md:grid-cols-2 gap-4">
+          <!-- Populated by JS -->
+        </div>
+      </div>
+    </section>
+
+  </div>
+
+  <!-- ======================================================================= -->
+  <!-- MODAL 1: ADD / EDIT CONTENT IDEA                                        -->
+  <!-- ======================================================================= -->
+  <div id="content-modal" class="fixed inset-0 z-50 hidden bg-ink/60 backdrop-blur-xs flex items-center justify-center p-4">
+    <div class="bg-cream w-full max-w-lg rounded-3xl border-[3px] border-ink shadow-stickerLg overflow-hidden max-h-[92vh] flex flex-col">
+      <div class="bg-cobalt text-white px-5 py-4 border-b-[2.5px] border-ink flex items-center justify-between">
+        <h3 id="content-modal-title" class="font-display text-xl font-bold">Tambah Ide Konten Baru</h3>
+        <button onclick="closeContentModal()" class="w-8 h-8 rounded-xl bg-white/20 hover:bg-white/30 flex items-center justify-center font-bold">✕</button>
+      </div>
+
+      <form id="content-form" onsubmit="saveContent(event)" class="p-5 space-y-3.5 overflow-y-auto">
+        <input type="hidden" id="form-content-id" />
+
+        <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
+          <div>
+            <label class="block text-xs font-extrabold uppercase tracking-wide mb-1">Pilih Akun & Platform *</label>
+            <select id="form-account" required class="w-full px-3 py-2 rounded-xl bg-white border-2 border-ink font-bold text-sm focus:outline-none focus:ring-2 focus:ring-cobalt">
+              <!-- Populated by JS -->
+            </select>
+          </div>
+          <div>
+            <label class="block text-xs font-extrabold uppercase tracking-wide mb-1">Tanggal Jadwal Tayang *</label>
+            <input type="date" id="form-date" required class="w-full px-3 py-2 rounded-xl bg-white border-2 border-ink font-bold text-sm focus:outline-none focus:ring-2 focus:ring-cobalt" />
+          </div>
+        </div>
+
+        <div>
+          <label class="block text-xs font-extrabold uppercase tracking-wide mb-1">Judul / Ide Konten *</label>
+          <input type="text" id="form-title" required placeholder="Contoh: Tutorial Edit Video Retro di CapCut..." class="w-full px-3 py-2 rounded-xl bg-white border-2 border-ink font-bold text-sm focus:outline-none focus:ring-2 focus:ring-cobalt" />
+        </div>
+
+        <div>
+          <label class="block text-xs font-extrabold uppercase tracking-wide mb-1.5">Status Pengerjaan</label>
+          <input type="hidden" id="form-status" value="Idea" />
+          <div id="modal-status-selector" class="grid grid-cols-2 sm:grid-cols-3 gap-2">
+            <!-- Populated by JS with color-coded status pills -->
+          </div>
+        </div>
+
+        <div>
+          <label class="block text-xs font-extrabold uppercase tracking-wide mb-1">Link Referensi / Inspirasi (Opsional)</label>
+          <input type="url" id="form-ref-link" placeholder="https://www.tiktok.com/..." class="w-full px-3 py-2 rounded-xl bg-white border-2 border-ink font-semibold text-sm focus:outline-none focus:ring-2 focus:ring-cobalt" />
+        </div>
+
+        <div>
+          <label class="block text-xs font-extrabold uppercase tracking-wide mb-1">Catatan Produksi / Hook / Caption</label>
+          <textarea id="form-notes" rows="3" placeholder="Tulis poin hook, arahan visual, audio, atau caption di sini..." class="w-full px-3 py-2 rounded-xl bg-stickyYellow/70 border-2 border-ink font-semibold text-sm focus:outline-none focus:ring-2 focus:ring-cobalt"></textarea>
+        </div>
+
+        <div>
+          <label class="block text-xs font-extrabold uppercase tracking-wide mb-1">Link Konten Live (Setelah Published)</label>
+          <input type="url" id="form-pub-link" placeholder="Tempel URL video/postingan yang sudah tayang untuk monitoring..." class="w-full px-3 py-2 rounded-xl bg-limeSticker/30 border-2 border-ink font-semibold text-sm focus:outline-none focus:ring-2 focus:ring-cobalt" />
+        </div>
+
+        <div class="flex items-center justify-between pt-2 border-t-2 border-dashed border-ink/20">
+          <button type="button" id="btn-delete-content" onclick="deleteCurrentContent()" class="hidden btn-tactile px-3.5 py-2 rounded-xl bg-coral text-white border-2 border-ink shadow-stickerSm text-xs font-extrabold">
+            🗑️ Hapus
+          </button>
+          <div class="flex items-center gap-2 ml-auto">
+            <button type="button" onclick="closeContentModal()" class="btn-tactile px-4 py-2 rounded-xl bg-white border-2 border-ink shadow-stickerSm text-xs font-extrabold">
+              Batal
+            </button>
+            <button type="submit" class="btn-tactile px-5 py-2 rounded-xl bg-cobalt text-white border-2 border-ink shadow-stickerSm font-display font-semibold text-sm">
+              Simpan Konten
+            </button>
+          </div>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <!-- ======================================================================= -->
+  <!-- MODAL 2: ADD ACCOUNT (IN ACCOUNT VAULT)                                 -->
+  <!-- ======================================================================= -->
+  <div id="account-modal" class="fixed inset-0 z-50 hidden bg-ink/60 backdrop-blur-xs flex items-center justify-center p-4">
+    <div class="bg-cream w-full max-w-md rounded-3xl border-[3px] border-ink shadow-stickerLg overflow-hidden">
+      <div class="bg-limeSticker text-ink px-5 py-4 border-b-[2.5px] border-ink flex items-center justify-between">
+        <h3 class="font-display text-xl font-bold">+ Tambah Akun Baru</h3>
+        <button onclick="closeAccountModal()" class="w-8 h-8 rounded-xl bg-white/60 hover:bg-white flex items-center justify-center font-bold">✕</button>
+      </div>
+
+      <form id="account-form" onsubmit="saveAccount(event)" class="p-5 space-y-3.5">
+        <div>
+          <label class="block text-xs font-extrabold uppercase tracking-wide mb-1">Platform *</label>
+          <select id="acc-form-platform" required class="w-full px-3 py-2 rounded-xl bg-white border-2 border-ink font-bold text-sm focus:outline-none focus:ring-2 focus:ring-cobalt">
+            <option value="TikTok">TikTok</option>
+            <option value="YouTube">YouTube</option>
+            <option value="Instagram">Instagram</option>
+            <option value="Threads">Threads</option>
+            <option value="X/Twitter">X/Twitter</option>
+            <option value="Other">Other</option>
+          </select>
+        </div>
+
+        <div>
+          <label class="block text-xs font-extrabold uppercase tracking-wide mb-1">Handle / Nama Channel *</label>
+          <input type="text" id="acc-form-handle" required placeholder="Contoh: @sam.creative atau Sam Studio" class="w-full px-3 py-2 rounded-xl bg-white border-2 border-ink font-bold text-sm focus:outline-none focus:ring-2 focus:ring-cobalt" />
+        </div>
+
+        <div>
+          <label class="block text-xs font-extrabold uppercase tracking-wide mb-1">Email Login *</label>
+          <input type="email" id="acc-form-email" required placeholder="email.akun@gmail.com" class="w-full px-3 py-2 rounded-xl bg-white border-2 border-ink font-semibold text-sm focus:outline-none focus:ring-2 focus:ring-cobalt" />
+        </div>
+
+        <div>
+          <label class="block text-xs font-extrabold uppercase tracking-wide mb-1">Password *</label>
+          <input type="text" id="acc-form-password" required placeholder="Masukkan password akun..." class="w-full px-3 py-2 rounded-xl bg-white border-2 border-ink font-semibold text-sm focus:outline-none focus:ring-2 focus:ring-cobalt" />
+        </div>
+
+        <div>
+          <label class="block text-xs font-extrabold uppercase tracking-wide mb-1">Catatan Niche / Akun</label>
+          <input type="text" id="acc-form-note" placeholder="Contoh: Khusus konten ASMR & unboxing" class="w-full px-3 py-2 rounded-xl bg-stickyYellow/70 border-2 border-ink font-semibold text-sm focus:outline-none focus:ring-2 focus:ring-cobalt" />
+        </div>
+
+        <div class="flex items-center justify-end gap-2 pt-2 border-t-2 border-dashed border-ink/20">
+          <button type="button" onclick="closeAccountModal()" class="btn-tactile px-4 py-2 rounded-xl bg-white border-2 border-ink shadow-stickerSm text-xs font-extrabold">
+            Batal
+          </button>
+          <button type="submit" class="btn-tactile px-5 py-2 rounded-xl bg-cobalt text-white border-2 border-ink shadow-stickerSm font-display font-semibold text-sm">
+            Simpan Akun
+          </button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <!-- TOAST NOTIFICATION -->
+  <div id="toast-box" class="fixed bottom-5 right-5 z-50 hidden transform transition-all duration-200">
+    <div id="toast-content" class="bg-ink text-white px-4 py-2.5 rounded-2xl border-2 border-white shadow-sticker font-bold text-xs sm:text-sm flex items-center gap-2">
+      <span id="toast-icon">✨</span>
+      <span id="toast-text">Tersimpan!</span>
+    </div>
+  </div>
+
+  <script>
+    // =========================================================================
+    // 1. CONSTANTS, CONFIGURATION & DEFAULT DEMO DATA
+    // =========================================================================
+    const STORAGE_KEY_ACCOUNTS = 'sam_scrapbook_accounts_v2';
+    const STORAGE_KEY_CONTENTS = 'sam_scrapbook_contents_v2';
+    const STORAGE_KEY_SYNC_URL = 'sam_scrapbook_sheets_url_v1';
+    const DEFAULT_SHEETS_URL = 'https://script.google.com/macros/s/AKfycbzhEFIqKbJFKLl2Iwgi8irSmqlAyr3lv1_fhd3wd-5EhnSpNR89EJZTOOmgjeBv8qfu/exec';
+    const VAULT_PIN = '235711';
+
+    const MONTH_NAMES = [
+      'Januari', 'Februari', 'Maret', 'April', 'Mei', 'Juni',
+      'Juli', 'Agustus', 'September', 'Oktober', 'November', 'Desember'
+    ];
+
+    const STATUS_CONFIG = {
+      'Idea': {
+        emoji: '💡',
+        bg: '#FEF08A',
+        text: '#854D0E',
+        accent: '#CA8A04',
+        badgeClass: 'bg-[#FEF08A] text-[#854D0E]'
+      },
+      'Scripting': {
+        emoji: '✍️',
+        bg: '#BAE6FD',
+        text: '#075985',
+        accent: '#0284C7',
+        badgeClass: 'bg-[#BAE6FD] text-[#075985]'
+      },
+      'Editing': {
+        emoji: '🎬',
+        bg: '#E9D5FF',
+        text: '#6B21A8',
+        accent: '#9333EA',
+        badgeClass: 'bg-[#E9D5FF] text-[#6B21A8]'
+      },
+      'Ready to Post': {
+        emoji: '🚀',
+        bg: '#FED7AA',
+        text: '#9A3412',
+        accent: '#EA580C',
+        badgeClass: 'bg-[#FED7AA] text-[#9A3412]'
+      },
+      'Published': {
+        emoji: '✅',
+        bg: '#D9F99D',
+        text: '#3F6212',
+        accent: '#65A30D',
+        badgeClass: 'bg-[#D9F99D] text-[#3F6212]'
+      }
+    };
+
+    const todayObj = new Date();
+    const currentYear = todayObj.getFullYear();
+    const currentMonth = String(todayObj.getMonth() + 1).padStart(2, '0');
+
+    const DEFAULT_ACCOUNTS = [
+      { id: 'acc-1', platform: 'TikTok', handle: '@sam.creative', email: 'sam.creative@gmail.com', password: 'SamTikTok#2026!', note: 'Akun utama konten desain, AI tools & tutorial CapCut' },
+      { id: 'acc-2', platform: 'TikTok', handle: '@sam.asmr', email: 'sam.asmr.studio@gmail.com', password: 'AsmrVibes*88', note: 'Konten unboxing desk setup & ASMR stationery' },
+      { id: 'acc-3', platform: 'TikTok', handle: '@yellowduck.clips', email: 'clips@yellowduck.id', password: 'DuckClips!99', note: 'Portofolio video pendek & eksperimen AI' },
+      { id: 'acc-4', platform: 'YouTube', handle: 'Sam Studio', email: 'samstudio.yt@gmail.com', password: 'YtStudio#771', note: 'Channel utama: vlog kreatif & breakdown workflow' },
+      { id: 'acc-5', platform: 'YouTube', handle: 'Sam Tech', email: 'samtech.review@gmail.com', password: 'TechGear@2026', note: 'Review aplikasi produktivitas & gadget' },
+      { id: 'acc-6', platform: 'YouTube', handle: 'Yellow Duck ID', email: 'media@yellowduck.id', password: 'YellowDuck#2026', note: 'Showcase proyek klien & showreel animasi' },
+      { id: 'acc-7', platform: 'Instagram', handle: '@daily.sam', email: 'daily.sam.ig@gmail.com', password: 'DailySam*321', note: 'Reels keseharian, carousel tips & estetika' },
+      { id: 'acc-8', platform: 'Instagram', handle: '@sam.archive', email: 'archive.sam@gmail.com', password: 'ArchiveMood#44', note: 'Kumpulan desain poster & sketsa visual' },
+      { id: 'acc-9', platform: 'Threads', handle: '@sam.threads', email: 'daily.sam.ig@gmail.com', password: 'DailySam*321', note: 'Micro-blogging & diskusi cepat seputar industri kreatif' },
+      { id: 'acc-10', platform: 'Threads', handle: '@sam.notes', email: 'sam.creative@gmail.com', password: 'SamTikTok#2026!', note: 'Catatan harian, prompt AI singkat & insight' }
+    ];
+
+    const DEFAULT_CONTENTS = [
+      {
+        id: 'cnt-1',
+        accountId: 'acc-1',
+        date: `${currentYear}-${currentMonth}-12`,
+        title: '3 Trik Transisi Retro Scrapbook di CapCut',
+        status: 'Published',
+        refLink: 'https://www.tiktok.com',
+        notes: 'Hook 3 detik pertama pakai efek kertas robek. Musik latar lo-fi ceria.',
+        pubLink: 'https://www.tiktok.com/@sam.creative'
+      },
+      {
+        id: 'cnt-2',
+        accountId: 'acc-4',
+        date: `${currentYear}-${currentMonth}-12`,
+        title: 'Full Workflow Bikin Konten AI Dari Nol Sampai Render',
+        status: 'Ready to Post',
+        refLink: 'https://www.youtube.com',
+        notes: 'Thumbnail sudah selesai. Tinggal upload jam 19.00 WIB & pasang end-screen.',
+        pubLink: ''
+      },
+      {
+        id: 'cnt-3',
+        accountId: 'acc-9',
+        date: `${currentYear}-${currentMonth}-12`,
+        title: 'Thread: Kenapa Konsistensi Sistem Lebih Penting dari Motivasi',
+        status: 'Scripting',
+        refLink: '',
+        notes: 'Buat 5 utas pendek dengan hook pertanyaan di postingan pertama.',
+        pubLink: ''
+      },
+      {
+        id: 'cnt-4',
+        accountId: 'acc-2',
+        date: `${currentYear}-${currentMonth}-14`,
+        title: 'ASMR Unboxing Mechanical Keyboard & Sticky Notes Pastel',
+        status: 'Editing',
+        refLink: 'https://www.tiktok.com',
+        notes: 'Naikkan volume suara klik switch dan gesekan kertas.',
+        pubLink: ''
+      },
+      {
+        id: 'cnt-5',
+        accountId: 'acc-7',
+        date: `${currentYear}-${currentMonth}-15`,
+        title: 'Carousel: 6 Kombinasi Warna Retro Favorit Minggu Ini',
+        status: 'Idea',
+        refLink: 'https://www.instagram.com',
+        notes: 'Sertakan kode HEX di setiap slide supaya gampang di-save followers.',
+        pubLink: ''
+      },
+      {
+        id: 'cnt-6',
+        accountId: 'acc-6',
+        date: `${currentYear}-${currentMonth}-16`,
+        title: 'Behind The Scenes: Proses Kreatif Yellow Duck Studio',
+        status: 'Editing',
+        refLink: 'https://www.youtube.com',
+        notes: 'Tambahkan B-roll meja kerja dan proses sketsa storyboard.',
+        pubLink: ''
+      },
+      {
+        id: 'cnt-7',
+        accountId: 'acc-5',
+        date: `${currentYear}-${currentMonth}-21`,
+        title: 'Top 5 Aplikasi Produktivitas Gratis untuk Kreator 2026',
+        status: 'Idea',
+        refLink: 'https://www.youtube.com',
+        notes: 'Bandingkan fitur sinkronisasi laptop dan HP di tiap aplikasi.',
+        pubLink: ''
+      }
+    ];
+
+    // =========================================================================
+    // 2. APPLICATION STATE & STORAGE HELPERS
+    // =========================================================================
+    let accounts = [];
+    let contents = [];
+    let selectedPlatformFilter = 'ALL';
+    let selectedAccountFilter = 'ALL';
+    let selectedStatusFilter = 'ALL';
+    let activeTab = 'tracker';
+    let calYear = todayObj.getFullYear();
+    let calMonth = todayObj.getMonth();
+
+    let isVaultUnlocked = false;
+    let enteredPin = '';
+    let visiblePasswords = {};
+    let sheetsApiUrl = '';
+    let isSyncing = false;
+
+    function updateSyncBadge(state, label) {
+      const dot = document.getElementById('sync-status-dot');
+      const text = document.getElementById('sync-status-text');
+      if (!dot || !text) return;
+
+      text.textContent = label;
+      if (state === 'synced') {
+        dot.className = 'w-2 h-2 rounded-full bg-emerald-500';
+      } else if (state === 'syncing') {
+        dot.className = 'w-2 h-2 rounded-full bg-cobalt animate-ping';
+      } else if (state === 'error') {
+        dot.className = 'w-2 h-2 rounded-full bg-coral';
+      } else {
+        dot.className = 'w-2 h-2 rounded-full bg-amber-400';
+      }
+    }
+
+    function loadFromStorage() {
+      try {
+        sheetsApiUrl = localStorage.getItem(STORAGE_KEY_SYNC_URL) || DEFAULT_SHEETS_URL;
+        const savedAcc = localStorage.getItem(STORAGE_KEY_ACCOUNTS);
+        const savedCnt = localStorage.getItem(STORAGE_KEY_CONTENTS);
+        accounts = savedAcc ? JSON.parse(savedAcc) : JSON.parse(JSON.stringify(DEFAULT_ACCOUNTS));
+        contents = savedCnt ? JSON.parse(savedCnt) : JSON.parse(JSON.stringify(DEFAULT_CONTENTS));
+      } catch (e) {
+        accounts = JSON.parse(JSON.stringify(DEFAULT_ACCOUNTS));
+        contents = JSON.parse(JSON.stringify(DEFAULT_CONTENTS));
+      }
+    }
+
+    async function pushToCloud() {
+      if (!sheetsApiUrl) return;
+      isSyncing = true;
+      updateSyncBadge('syncing', 'Menyimpan ke Sheets...');
+      try {
+        const res = await fetch(sheetsApiUrl, {
+          method: 'POST',
+          headers: { 'Content-Type': 'text/plain;charset=utf-8' },
+          body: JSON.stringify({ accounts, contents })
+        });
+        const data = await res.json();
+        if (data.status === 'success') {
+          updateSyncBadge('synced', 'Synced ☁️');
+        } else {
+          updateSyncBadge('error', 'Sync Gagal');
+        }
+      } catch (err) {
+        console.warn('Cloud push error:', err);
+        updateSyncBadge('error', 'Offline / Gagal');
+      } finally {
+        isSyncing = false;
+      }
+    }
+
+    async function pullFromCloud(silent = false) {
+      if (!sheetsApiUrl) {
+        updateSyncBadge('local', 'Local Mode');
+        return;
+      }
+      isSyncing = true;
+      updateSyncBadge('syncing', 'Sinkronisasi...');
+      try {
+        const res = await fetch(sheetsApiUrl);
+        const data = await res.json();
+        if (data.status === 'success') {
+          // Jika sheet masih kosong saat pertama kali dihubungkan, unggah data lokal saat ini ke sheet
+          if ((!data.accounts || data.accounts.length === 0) && (!data.contents || data.contents.length === 0)) {
+            await pushToCloud();
+            if (!silent) showToast('Spreadsheet kosong terdeteksi — data awal diunggah ke Sheets!');
+          } else {
+            if (Array.isArray(data.accounts) && data.accounts.length > 0) {
+              accounts = data.accounts;
+              localStorage.setItem(STORAGE_KEY_ACCOUNTS, JSON.stringify(accounts));
+            }
+            if (Array.isArray(data.contents)) {
+              contents = data.contents;
+              localStorage.setItem(STORAGE_KEY_CONTENTS, JSON.stringify(contents));
+            }
+            renderAll();
+            updateSyncBadge('synced', 'Synced ☁️');
+            if (!silent) showToast('Data terbaru ditarik dari Google Sheets!');
+          }
+        } else {
+          updateSyncBadge('error', 'Sync Gagal');
+          if (!silent) showToast('Gagal terhubung ke Google Sheets.');
+        }
+      } catch (err) {
+        console.warn('Cloud pull error:', err);
+        updateSyncBadge('error', 'Offline / Gagal');
+        if (!silent) showToast('Gagal menarik data (cek koneksi / URL).');
+      } finally {
+        isSyncing = false;
+      }
+    }
+
+    function manualCloudPull() {
+      if (!sheetsApiUrl) {
+        showToast('Buka Account Vault untuk pasang URL Google Sheets!');
+        switchTab('vault');
+        return;
+      }
+      pullFromCloud(false);
+    }
+
+    function saveSheetsUrl() {
+      const inputEl = document.getElementById('sheets-url-input');
+      const url = (inputEl?.value || '').trim();
+      sheetsApiUrl = url;
+      localStorage.setItem(STORAGE_KEY_SYNC_URL, url);
+      if (url) {
+        pullFromCloud(false);
+      } else {
+        updateSyncBadge('local', 'Local Mode');
+        showToast('URL dihapus. Kembali ke Local Mode.');
+      }
+    }
+
+    function saveToStorage() {
+      try {
+        localStorage.setItem(STORAGE_KEY_ACCOUNTS, JSON.stringify(accounts));
+        localStorage.setItem(STORAGE_KEY_CONTENTS, JSON.stringify(contents));
+      } catch (e) {
+        console.warn('Gagal menyimpan ke localStorage:', e);
+      }
+      updateStats();
+      pushToCloud();
+    }
+
+    loadFromStorage();
+
+    // =========================================================================
+    // 3. UI HELPERS (ICONS, COLORS, SANITIZATION)
+    // =========================================================================
+    function escapeHtml(str) {
+      if (!str) return '';
+      return String(str)
+        .replace(/&/g, '&amp;')
+        .replace(/</g, '&lt;')
+        .replace(/>/g, '&gt;')
+        .replace(/"/g, '&quot;')
+        .replace(/'/g, '&#039;');
+    }
+
+    function getStatusStyle(status) {
+      return STATUS_CONFIG[status]?.badgeClass || 'bg-white text-ink';
+    }
+
+    function getPlatformIcon(platform, sizeClass = 'w-4 h-4') {
+      switch (platform) {
+        case 'TikTok':
+          return `<svg class="${sizeClass} shrink-0" viewBox="0 0 24 24" fill="currentColor"><path d="M19.59 6.69a4.83 4.83 0 0 1-3.77-4.25V2h-3.45v13.67a2.89 2.89 0 0 1-5.2 1.74 2.89 2.89 0 0 1 2.31-4.64 2.93 2.93 0 0 1 .88.13V9.4a6.84 6.84 0 0 0-1-.05A6.33 6.33 0 0 0 5 20.1a6.34 6.34 0 0 0 10.86-4.43v-7a8.16 8.16 0 0 0 4.77 1.52v-3.4a4.85 4.85 0 0 1-1-.1z"/></svg>`;
+        case 'YouTube':
+          return `<svg class="${sizeClass} shrink-0 text-[#FF0000]" viewBox="0 0 24 24" fill="currentColor"><path d="M23.498 6.186a3.016 3.016 0 0 0-2.122-2.136C19.505 3.545 12 3.545 12 3.545s-7.505 0-9.377.505A3.017 3.017 0 0 0 .502 6.186C0 8.07 0 12 0 12s0 3.93.502 5.814a3.016 3.016 0 0 0 2.122 2.136c1.871.505 9.376.505 9.376.505s7.505 0 9.377-.505a3.015 3.015 0 0 0 2.122-2.136C24 15.93 24 12 24 12s0-3.93-.502-5.814zM9.545 15.568V8.432L15.818 12l-6.273 3.568z"/></svg>`;
+        case 'Instagram':
+          return `<svg class="${sizeClass} shrink-0 text-[#E1306C]" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zm0-2.163c-3.259 0-3.667.014-4.947.072-4.358.2-6.78 2.618-6.98 6.98-.059 1.281-.073 1.689-.073 4.948 0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98 1.281.058 1.689.072 4.948.072 3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98-1.281-.059-1.69-.073-4.949-.073zm0 5.838c-3.403 0-6.162 2.759-6.162 6.162s2.759 6.163 6.162 6.163 6.162-2.759 6.162-6.163c0-3.403-2.759-6.162-6.162-6.162zm0 10.162c-2.209 0-4-1.79-4-4 0-2.209 1.791-4 4-4s4 1.791 4 4c0 2.21-1.791 4-4 4zm6.406-11.845c-.796 0-1.441.645-1.441 1.44s.645 1.44 1.441 1.44c.795 0 1.439-.645 1.439-1.44s-.644-1.44-1.439-1.44z"/></svg>`;
+        case 'Threads':
+          return `<svg class="${sizeClass} shrink-0" viewBox="0 0 24 24" fill="currentColor"><path d="M12.186 24h-.007c-3.581-.024-6.334-1.205-8.184-3.509C2.35 18.44 1.5 15.586 1.472 12.01v-.017c.03-3.579.879-6.43 2.525-8.482C5.845 1.205 8.6.024 12.18 0h.014c2.746.02 5.043.725 6.826 2.098 1.677 1.29 2.858 3.13 3.509 5.467l-2.04.569c-1.104-3.96-3.898-5.984-8.304-6.015-2.91.022-5.11.936-6.54 2.717C4.307 6.504 3.616 8.914 3.589 12c.027 3.086.718 5.496 2.057 7.164 1.43 1.783 3.631 2.698 6.54 2.717 2.623-.02 4.358-.631 5.8-2.045 1.647-1.613 1.618-3.593 1.09-4.798-.31-.71-.873-1.3-1.634-1.75-.192 1.352-.622 2.446-1.284 3.272-.886 1.102-2.14 1.704-3.73 1.79-1.202.065-2.361-.218-3.259-.801-1.063-.689-1.685-1.74-1.752-2.964-.065-1.19.408-2.285 1.33-3.082.88-.76 2.119-1.207 3.583-1.291a13.853 13.853 0 0 1 3.02.142c-.126-.742-.375-1.332-.75-1.757-.513-.586-1.308-.883-2.359-.89h-.029c-.844 0-1.992.232-2.721 1.32L7.734 7.847c.98-1.454 2.568-2.256 4.478-2.256h.044c3.194.02 5.097 1.975 5.287 5.388.108.046.216.094.321.142 1.49.7 2.58 1.761 3.154 3.07.797 1.82.871 4.79-1.548 7.158-1.85 1.81-4.094 2.628-7.277 2.65Zm1.003-11.69c-.242 0-.487.007-.739.021-1.836.103-2.98.946-2.916 2.143.067 1.256 1.452 1.839 2.784 1.767 1.224-.065 2.818-.543 3.086-3.71a10.5 10.5 0 0 0-2.215-.221z"/></svg>`;
+        default:
+          return `<svg class="${sizeClass} shrink-0 text-cobalt" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><circle cx="12" cy="12" r="10"/><path d="M2 12h20"/><path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"/></svg>`;
+      }
+    }
+
+    // =========================================================================
+    // 4. HEADER GREETING, STATS & TWO-TIER FILTER RENDERING
+    // =========================================================================
+    function renderGreeting() {
+      const hour = new Date().getHours();
+      let timeGreeting = 'Halo';
+      let icon = '👋';
+      let subMessage = 'Siap merancang ide konten, referensi link, & jadwal multi-platform hari ini?';
+
+      if (hour >= 4 && hour < 11) {
+        timeGreeting = 'Selamat Pagi';
+        icon = '☀️';
+        subMessage = 'Waktunya menyeduh kopi dan menyusun ide-ide segar untuk kontenmu hari ini!';
+      } else if (hour >= 11 && hour < 15) {
+        timeGreeting = 'Selamat Siang';
+        icon = '🌤️';
+        subMessage = 'Tetap semangat! Cek jadwal produksi dan progres konten multi-akunmu di bawah.';
+      } else if (hour >= 15 && hour < 18) {
+        timeGreeting = 'Selamat Sore';
+        icon = '🌇';
+        subMessage = 'Waktunya review editing, siapkan caption, atau jadwalkan postingan sore ini.';
+      } else {
+        timeGreeting = 'Selamat Malam';
+        icon = '🌙';
+        subMessage = 'Saatnya santai sejenak sambil mencatat ide mendadak sebelum beristirahat.';
+      }
+
+      const badgeEl = document.getElementById('greeting-badge');
+      const subEl = document.getElementById('greeting-subtext');
+      if (badgeEl) {
+        badgeEl.innerHTML = `<span>${icon} ${timeGreeting}, Sam!</span>`;
+      }
+      if (subEl) {
+        subEl.textContent = subMessage;
+      }
+    }
+
+    function updateStats() {
+      document.getElementById('stat-total').textContent = contents.length;
+      document.getElementById('stat-published').textContent = contents.filter(c => c.status === 'Published').length;
+      document.getElementById('stat-accounts').textContent = accounts.length;
+    }
+
+    function renderAccountFilterBar() {
+      const platformBar = document.getElementById('platform-filter-bar');
+      const platforms = ['TikTok', 'YouTube', 'Instagram', 'Threads'];
+      accounts.forEach(a => {
+        if (!platforms.includes(a.platform)) platforms.push(a.platform);
+      });
+
+      const isAllPlat = selectedPlatformFilter === 'ALL';
+      let tier1Html = `
+        <button onclick="setPlatformFilter('ALL')" class="btn-tactile shrink-0 flex items-center gap-1.5 px-3.5 py-2 rounded-2xl border-2 border-ink font-display font-semibold text-xs sm:text-sm transition-all ${isAllPlat ? 'bg-cobalt text-white shadow-stickerSm' : 'bg-white text-ink hover:bg-stickyYellow'}">
+          <span>🌐 Semua Platform</span>
+          <span class="text-[11px] px-1.5 py-0.5 rounded-full ${isAllPlat ? 'bg-white/25 text-white' : 'bg-ink/10 text-ink'} font-extrabold">${contents.length}</span>
+        </button>
+      `;
+
+      platforms.forEach(plat => {
+        const platAccs = accounts.filter(a => a.platform === plat);
+        if (platAccs.length === 0) return;
+        const platAccIds = platAccs.map(a => a.id);
+        const platContentCount = contents.filter(c => platAccIds.includes(c.accountId)).length;
+        const isActive = selectedPlatformFilter === plat;
+
+        tier1Html += `
+          <button onclick="setPlatformFilter('${escapeHtml(plat)}')" class="btn-tactile shrink-0 flex items-center gap-1.5 px-3.5 py-2 rounded-2xl border-2 border-ink font-display font-semibold text-xs sm:text-sm transition-all ${isActive ? 'bg-coral text-white shadow-stickerSm' : 'bg-white text-ink hover:bg-stickyYellow'}">
+            ${getPlatformIcon(plat, 'w-4 h-4')}
+            <span>${escapeHtml(plat)}</span>
+            <span class="text-[11px] px-1.5 py-0.5 rounded-full ${isActive ? 'bg-white/25 text-white' : 'bg-ink/10 text-ink'} font-extrabold">${platContentCount}</span>
+          </button>
+        `;
+      });
+
+      platformBar.innerHTML = tier1Html;
+
+      // TIER 2: Specific Account Pills
+      const visibleAccounts = selectedPlatformFilter === 'ALL'
+        ? accounts
+        : accounts.filter(a => a.platform === selectedPlatformFilter);
+
+      document.getElementById('tier2-label').textContent = selectedPlatformFilter === 'ALL'
+        ? '📌 Semua Akun Lintas Platform:'
+        : `📌 Akun Khusus ${selectedPlatformFilter}:`;
+      document.getElementById('tier2-count').textContent = `${visibleAccounts.length} Akun`;
+
+      const visibleAccIds = visibleAccounts.map(a => a.id);
+      const totalForTier2 = contents.filter(c => visibleAccIds.includes(c.accountId)).length;
+
+      const bar = document.getElementById('account-filter-bar');
+      const allAccActive = selectedAccountFilter === 'ALL';
+
+      let tier2Html = `
+        <button onclick="setAccountFilter('ALL')" class="btn-tactile shrink-0 flex items-center gap-1.5 px-3 py-1.5 rounded-xl border-2 border-ink font-extrabold text-xs transition-all ${allAccActive ? 'bg-ink text-white shadow-stickerSm' : 'bg-cream text-ink hover:bg-stickyYellow'}">
+          <span>✨ Semua ${selectedPlatformFilter === 'ALL' ? 'Akun' : escapeHtml(selectedPlatformFilter)} (${totalForTier2})</span>
+        </button>
+      `;
+
+      visibleAccounts.forEach(acc => {
+        const isActive = selectedAccountFilter === acc.id;
+        const count = contents.filter(c => c.accountId === acc.id).length;
+        tier2Html += `
+          <button onclick="setAccountFilter('${acc.id}')" class="btn-tactile shrink-0 flex items-center gap-1.5 px-3 py-1.5 rounded-xl border-2 border-ink font-bold text-xs transition-all ${isActive ? 'bg-stickyYellow text-ink shadow-stickerSm ring-2 ring-coral' : 'bg-white text-ink hover:bg-cream'}">
+            ${getPlatformIcon(acc.platform, 'w-3.5 h-3.5')}
+            <span>${escapeHtml(acc.handle)}</span>
+            <span class="text-[11px] px-1.5 py-0.2 rounded-full bg-ink/10 font-extrabold">${count}</span>
+          </button>
+        `;
+      });
+
+      bar.innerHTML = tier2Html;
+    }
+
+    function setPlatformFilter(platform) {
+      selectedPlatformFilter = platform;
+      selectedAccountFilter = 'ALL';
+      renderAccountFilterBar();
+      renderTracker();
+      renderCalendar();
+    }
+
+    function setAccountFilter(accId) {
+      selectedAccountFilter = accId;
+      renderAccountFilterBar();
+      renderTracker();
+      renderCalendar();
+    }
+
+    function setStatusFilter(status) {
+      selectedStatusFilter = status;
+      document.querySelectorAll('.status-pill').forEach(btn => {
+        const isMatch = btn.dataset.status === status;
+        if (isMatch) {
+          btn.className = 'status-pill px-3 py-1 rounded-full text-xs font-extrabold border-2 border-ink bg-ink text-white';
+        } else {
+          btn.className = 'status-pill px-3 py-1 rounded-full text-xs font-extrabold border-2 border-ink/30 bg-white text-ink hover:border-ink';
+        }
+      });
+      renderTracker();
+    }
+
+    // =========================================================================
+    // 5. TAB NAVIGATION
+    // =========================================================================
+    function switchTab(tab) {
+      activeTab = tab;
+      const views = ['tracker', 'calendar', 'vault'];
+      views.forEach(v => {
+        const viewEl = document.getElementById(`view-${v}`);
+        const btnEl = document.getElementById(`tab-btn-${v}`);
+        if (v === tab) {
+          viewEl.classList.remove('hidden');
+          btnEl.className = 'btn-tactile flex items-center justify-center gap-1.5 px-3 sm:px-4 py-2.5 rounded-2xl font-display font-semibold text-xs sm:text-sm border-2 border-ink bg-cobalt text-white shadow-stickerSm';
+        } else {
+          viewEl.classList.add('hidden');
+          btnEl.className = 'btn-tactile flex items-center justify-center gap-1.5 px-3 sm:px-4 py-2.5 rounded-2xl font-display font-semibold text-xs sm:text-sm border-2 border-transparent text-ink hover:bg-cream';
+        }
+      });
+
+      if (tab === 'calendar') renderCalendar();
+      if (tab === 'vault') renderVault();
+    }
+
+    // =========================================================================
+    // 6. VIEW 1: CONTENT TRACKER RENDERING
+    // =========================================================================
+    function matchesAccountAndPlatform(item) {
+      if (selectedAccountFilter !== 'ALL') {
+        return item.accountId === selectedAccountFilter;
+      }
+      if (selectedPlatformFilter !== 'ALL') {
+        const acc = accounts.find(a => a.id === item.accountId);
+        return acc && acc.platform === selectedPlatformFilter;
+      }
+      return true;
+    }
+
+    function getFilteredContents() {
+      const searchQ = (document.getElementById('search-input')?.value || '').toLowerCase().trim();
+      return contents
+        .filter(item => {
+          const matchAcc = matchesAccountAndPlatform(item);
+          const matchStatus = selectedStatusFilter === 'ALL' || item.status === selectedStatusFilter;
+          const matchSearch = !searchQ ||
+            item.title.toLowerCase().includes(searchQ) ||
+            (item.notes && item.notes.toLowerCase().includes(searchQ));
+          return matchAcc && matchStatus && matchSearch;
+        })
+        .sort((a, b) => a.date.localeCompare(b.date));
+    }
+
+    function formatDisplayDate(dateStr) {
+      if (!dateStr) return '-';
+      const parts = dateStr.split('-');
+      if (parts.length !== 3) return dateStr;
+      const monthIdx = parseInt(parts[1], 10) - 1;
+      return `${parseInt(parts[2], 10)} ${MONTH_NAMES[monthIdx]?.slice(0, 3) || parts[1]} ${parts[0]}`;
+    }
+
+    function renderTracker() {
+      const listEl = document.getElementById('tracker-list');
+      const items = getFilteredContents();
+
+      if (items.length === 0) {
+        listEl.innerHTML = `
+          <div class="bg-white rounded-3xl border-[2.5px] border-ink shadow-sticker p-8 text-center">
+            <div class="text-4xl mb-2">📭</div>
+            <h3 class="font-display text-xl font-bold text-ink">Belum ada ide konten di filter ini</h3>
+            <p class="text-xs sm:text-sm font-semibold text-ink/70 mt-1 mb-4">
+              Coba pilih platform/akun lain atau klik tombol di bawah untuk menambahkan ide konten baru.
+            </p>
+            <button onclick="openContentModal()" class="btn-tactile px-4 py-2 rounded-2xl bg-coral text-white border-2 border-ink shadow-stickerSm font-display font-semibold text-sm">
+              + Tambah Ide Konten
+            </button>
+          </div>
+        `;
+        return;
+      }
+
+      listEl.innerHTML = items.map(item => {
+        const acc = accounts.find(a => a.id === item.accountId) || { platform: 'Other', handle: 'Akun Dihapus' };
+        const isPublished = item.status === 'Published';
+
+        return `
+          <article class="bg-white rounded-3xl border-[2.5px] border-ink shadow-sticker p-4 sm:p-5 transition-transform hover:-translate-y-0.5">
+            <div class="grid grid-cols-1 lg:grid-cols-12 gap-4 items-start">
+              
+              <!-- Left Column (5 cols): Account Badge, Date, Title, Quick Status -->
+              <div class="lg:col-span-5 space-y-2.5">
+                <div class="flex flex-wrap items-center gap-2">
+                  <span class="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-xl bg-cream border-2 border-ink text-xs font-extrabold">
+                    ${getPlatformIcon(acc.platform, 'w-3.5 h-3.5')}
+                    <span>${escapeHtml(acc.handle)}</span>
+                  </span>
+                  <span class="inline-flex items-center gap-1 px-2.5 py-1 rounded-xl bg-cobalt/10 border border-cobalt/30 text-cobalt text-xs font-extrabold">
+                    📅 ${formatDisplayDate(item.date)}
+                  </span>
+                </div>
+
+                <h3 class="font-display text-lg sm:text-xl font-bold text-ink leading-snug">
+                  ${escapeHtml(item.title)}
+                </h3>
+
+                <!-- Inline Status Selector -->
+                <div class="flex items-center gap-2 pt-0.5">
+                  <label class="text-[11px] font-extrabold uppercase tracking-wider text-ink/60">Status:</label>
+                  <select onchange="quickUpdateStatus('${item.id}', this.value)" class="px-3 py-1 rounded-xl border-2 border-ink font-extrabold text-xs cursor-pointer shadow-stickerSm focus:outline-none ${getStatusStyle(item.status)}">
+                    <option value="Idea" ${item.status === 'Idea' ? 'selected' : ''}>💡 Idea</option>
+                    <option value="Scripting" ${item.status === 'Scripting' ? 'selected' : ''}>✍️ Scripting</option>
+                    <option value="Editing" ${item.status === 'Editing' ? 'selected' : ''}>🎬 Editing</option>
+                    <option value="Ready to Post" ${item.status === 'Ready to Post' ? 'selected' : ''}>🚀 Ready to Post</option>
+                    <option value="Published" ${item.status === 'Published' ? 'selected' : ''}>✅ Published</option>
+                  </select>
+                </div>
+              </div>
+
+              <!-- Middle Column (4 cols): Sticky Note Box -->
+              <div class="lg:col-span-4 bg-stickyYellow/85 rounded-2xl border-2 border-ink p-3 shadow-stickerSm">
+                <div class="flex items-center justify-between text-[11px] font-extrabold uppercase tracking-wider text-ink/70 mb-1">
+                  <span>📝 Catatan / Hook</span>
+                </div>
+                <p class="text-xs sm:text-sm font-semibold text-ink leading-relaxed whitespace-pre-line">
+                  ${item.notes ? escapeHtml(item.notes) : '<span class="italic text-ink/50">Belum ada catatan produksi.</span>'}
+                </p>
+              </div>
+
+              <!-- Right Column (3 cols): Reference Link, Published Link, Edit Button -->
+              <div class="lg:col-span-3 flex flex-col justify-between gap-2.5">
+                <div class="space-y-2">
+                  <!-- Reference Link -->
+                  ${item.refLink ? `
+                    <a href="${escapeHtml(item.refLink)}" target="_blank" rel="noopener noreferrer" class="btn-tactile w-full flex items-center justify-between px-3 py-2 rounded-xl bg-cream border-2 border-ink shadow-stickerSm text-xs font-extrabold text-ink hover:bg-stickyYellow">
+                      <span class="truncate">🔗 Link Referensi</span>
+                      <span>↗</span>
+                    </a>
+                  ` : `
+                    <div class="w-full px-3 py-2 rounded-xl bg-cream/50 border-2 border-dashed border-ink/25 text-xs font-bold text-ink/45">
+                      🔗 Tanpa link referensi
+                    </div>
+                  `}
+
+                  <!-- Published Live Link -->
+                  ${item.pubLink ? `
+                    <a href="${escapeHtml(item.pubLink)}" target="_blank" rel="noopener noreferrer" class="btn-tactile w-full flex items-center justify-between px-3 py-2 rounded-xl bg-limeSticker border-2 border-ink shadow-stickerSm text-xs font-extrabold text-ink hover:brightness-95">
+                      <span class="truncate">🌐 Konten Live (Monitor)</span>
+                      <span>↗</span>
+                    </a>
+                  ` : `
+                    <button onclick="openContentModal('${item.id}')" class="w-full text-left px-3 py-2 rounded-xl ${isPublished ? 'bg-coral/15 border-coral text-coral' : 'bg-white border-ink/25 text-ink/50'} border-2 border-dashed text-xs font-extrabold hover:border-ink">
+                      ${isPublished ? '⚠️ Tambah Link Live' : '⏳ Belum dipublish'}
+                    </button>
+                  `}
+                </div>
+
+                <div class="flex items-center justify-end pt-1">
+                  <button onclick="openContentModal('${item.id}')" class="btn-tactile px-3.5 py-1.5 rounded-xl bg-cobalt text-white border-2 border-ink shadow-stickerSm text-xs font-extrabold hover:brightness-105">
+                    ✏️ Edit Detail
+                  </button>
+                </div>
+              </div>
+
+            </div>
+          </article>
+        `;
+      }).join('');
+    }
+
+    function quickUpdateStatus(contentId, newStatus) {
+      const idx = contents.findIndex(c => c.id === contentId);
+      if (idx !== -1) {
+        contents[idx].status = newStatus;
+        saveToStorage();
+        renderTracker();
+        renderCalendar();
+        showToast(`Status diubah ke "${newStatus}"`);
+      }
+    }
+
+    // =========================================================================
+    // 7. VIEW 2: MONTHLY CALENDAR VIEW
+    // =========================================================================
+    function changeMonth(delta) {
+      calMonth += delta;
+      if (calMonth > 11) {
+        calMonth = 0;
+        calYear++;
+      } else if (calMonth < 0) {
+        calMonth = 11;
+        calYear--;
+      }
+      renderCalendar();
+    }
+
+    function goToToday() {
+      calYear = todayObj.getFullYear();
+      calMonth = todayObj.getMonth();
+      renderCalendar();
+    }
+
+    function renderCalendar() {
+      document.getElementById('calendar-month-label').textContent = `${MONTH_NAMES[calMonth]} ${calYear}`;
+      const gridEl = document.getElementById('calendar-grid');
+
+      const firstDayOfMonth = new Date(calYear, calMonth, 1).getDay();
+      const daysInMonth = new Date(calYear, calMonth + 1, 0).getDate();
+      const filtered = contents.filter(item => matchesAccountAndPlatform(item));
+
+      let cellsHtml = '';
+
+      // Leading empty cells
+      for (let i = 0; i < firstDayOfMonth; i++) {
+        cellsHtml += `<div class="min-h-[120px] rounded-2xl bg-cream/40 border border-dashed border-ink/15 p-2"></div>`;
+      }
+
+      // Day cells
+      for (let day = 1; day <= daysInMonth; day++) {
+        const monthStr = String(calMonth + 1).padStart(2, '0');
+        const dayStr = String(day).padStart(2, '0');
+        const dateKey = `${calYear}-${monthStr}-${dayStr}`;
+
+        const dayItems = filtered.filter(c => c.date === dateKey);
+        const isToday =
+          day === todayObj.getDate() &&
+          calMonth === todayObj.getMonth() &&
+          calYear === todayObj.getFullYear();
+
+        cellsHtml += `
+          <div class="min-h-[124px] rounded-2xl ${isToday ? 'bg-cobalt/10 border-[2.5px] border-cobalt' : 'bg-cream/85 border-2 border-ink/25'} p-1.5 flex flex-col justify-between transition-colors hover:border-ink">
+            <div class="flex items-center justify-between mb-1 px-1">
+              <span class="text-xs font-display font-bold ${isToday ? 'bg-cobalt text-white px-2 py-0.5 rounded-full' : 'text-ink'}">
+                ${day}
+              </span>
+              <button onclick="openContentModal(null, '${dateKey}')" class="w-5 h-5 rounded-md bg-white border border-ink/40 text-ink hover:bg-stickyYellow flex items-center justify-center text-xs font-extrabold" title="Tambah jadwal di tanggal ${day}">
+                +
+              </button>
+            </div>
+
+            <div class="space-y-1 flex-1 overflow-y-auto max-h-[96px] pr-0.5">
+              ${dayItems.map(item => {
+                const acc = accounts.find(a => a.id === item.accountId) || { platform: 'TikTok', handle: '' };
+                const st = STATUS_CONFIG[item.status] || STATUS_CONFIG['Idea'];
+                return `
+                  <button onclick="openContentModal('${item.id}')" style="background-color: ${st.bg}; color: ${st.text}; border-color: ${st.accent}; border-left-width: 4px;" class="w-full text-left px-1.5 py-1 rounded-lg border text-[10px] sm:text-[11px] font-extrabold leading-tight shadow-[0_1.5px_0_#1D2D44] hover:brightness-95 transition-all" title="[${item.status}] [${acc.platform} - ${acc.handle}] ${escapeHtml(item.title)}">
+                    <div class="flex items-center justify-between gap-1 opacity-90 text-[9px] sm:text-[10px] mb-0.5">
+                      <div class="flex items-center gap-1 min-w-0">
+                        ${getPlatformIcon(acc.platform, 'w-3 h-3')}
+                        <span class="truncate font-bold">${escapeHtml(acc.handle)}</span>
+                      </div>
+                      <span class="shrink-0 text-[9px]" title="${escapeHtml(item.status)}">${st.emoji}</span>
+                    </div>
+                    <div class="truncate">${escapeHtml(item.title)}</div>
+                  </button>
+                `;
+              }).join('')}
+            </div>
+          </div>
+        `;
+      }
+
+      gridEl.innerHTML = cellsHtml;
+    }
+
+    // =========================================================================
+    // 8. VIEW 3: PRIVATE ACCOUNT VAULT (PIN LOCK & CREDENTIALS)
+    // =========================================================================
+    function updatePinDots() {
+      for (let i = 0; i < 6; i++) {
+        const dot = document.getElementById(`pin-dot-${i}`);
+        if (i < enteredPin.length) {
+          dot.className = 'w-4 h-4 rounded-full border-2 border-ink bg-coral scale-110 transition-transform';
+        } else {
+          dot.className = 'w-4 h-4 rounded-full border-2 border-ink bg-cream transition-transform';
+        }
+      }
+    }
+
+    function pressPin(digit) {
+      if (enteredPin.length >= 6) return;
+      document.getElementById('pin-error-msg').textContent = '';
+      enteredPin += digit;
+      updatePinDots();
+
+      if (enteredPin.length === 6) {
+        if (enteredPin === VAULT_PIN) {
+          isVaultUnlocked = true;
+          enteredPin = '';
+          updatePinDots();
+          renderVault();
+          showToast('Account Vault terbuka!');
+        } else {
+          document.getElementById('pin-error-msg').textContent = '❌ PIN salah! Silakan coba lagi.';
+          setTimeout(() => {
+            enteredPin = '';
+            updatePinDots();
+          }, 450);
+        }
+      }
+    }
+
+    function backspacePin() {
+      enteredPin = enteredPin.slice(0, -1);
+      updatePinDots();
+    }
+
+    function clearPin() {
+      enteredPin = '';
+      document.getElementById('pin-error-msg').textContent = '';
+      updatePinDots();
+    }
+
+    function lockVault() {
+      isVaultUnlocked = false;
+      enteredPin = '';
+      visiblePasswords = {};
+      updatePinDots();
+      renderVault();
+      showToast('Account Vault dikunci kembali.');
+    }
+
+    function togglePasswordVisibility(accId) {
+      visiblePasswords[accId] = !visiblePasswords[accId];
+      renderVault();
+    }
+
+    function copyText(text, label) {
+      const tempInput = document.createElement('input');
+      tempInput.value = text;
+      document.body.appendChild(tempInput);
+      tempInput.select();
+      try {
+        document.execCommand('copy');
+        showToast(`${label} berhasil disalin!`);
+      } catch (e) {
+        showToast(`Gagal menyalin ${label}`);
+      }
+      document.body.removeChild(tempInput);
+    }
+
+    function deleteAccount(accId) {
+      if (accounts.length <= 1) {
+        showToast('Minimal harus tersisa 1 akun!');
+        return;
+      }
+      accounts = accounts.filter(a => a.id !== accId);
+      if (selectedAccountFilter === accId) selectedAccountFilter = 'ALL';
+      saveToStorage();
+      renderAll();
+      showToast('Akun dihapus dari Vault.');
+    }
+
+    function renderVault() {
+      const lockedEl = document.getElementById('vault-locked-screen');
+      const unlockedEl = document.getElementById('vault-unlocked-screen');
+
+      if (!isVaultUnlocked) {
+        lockedEl.classList.remove('hidden');
+        unlockedEl.classList.add('hidden');
+        return;
+      }
+
+      lockedEl.classList.add('hidden');
+      unlockedEl.classList.remove('hidden');
+
+      const urlInput = document.getElementById('sheets-url-input');
+      if (urlInput && urlInput.value !== sheetsApiUrl) {
+        urlInput.value = sheetsApiUrl;
+      }
+
+      const gridEl = document.getElementById('vault-accounts-grid');
+      gridEl.innerHTML = accounts.map(acc => {
+        const isShown = !!visiblePasswords[acc.id];
+        const maskedPass = '••••••••••••';
+
+        return `
+          <div class="bg-white rounded-3xl border-[2.5px] border-ink shadow-sticker p-4 sm:p-5 flex flex-col justify-between gap-3">
+            <div>
+              <div class="flex items-center justify-between gap-2 mb-2">
+                <span class="inline-flex items-center gap-1.5 px-3 py-1 rounded-xl bg-stickyYellow border-2 border-ink text-xs font-extrabold">
+                  ${getPlatformIcon(acc.platform, 'w-4 h-4')}
+                  <span>${escapeHtml(acc.platform)}</span>
+                </span>
+                <button onclick="deleteAccount('${acc.id}')" class="text-xs font-extrabold text-ink/45 hover:text-coral px-2 py-1 rounded-lg" title="Hapus Akun">
+                  🗑️ Hapus
+                </button>
+              </div>
+
+              <h3 class="font-display text-xl font-bold text-ink">${escapeHtml(acc.handle)}</h3>
+              ${acc.note ? `<p class="text-xs font-semibold text-ink/70 mt-0.5">${escapeHtml(acc.note)}</p>` : ''}
+            </div>
+
+            <div class="space-y-2 bg-cream rounded-2xl border-2 border-ink/25 p-3">
+              <!-- Email Row -->
+              <div class="flex items-center justify-between gap-2">
+                <div class="min-w-0">
+                  <div class="text-[10px] font-extrabold uppercase text-ink/55">Email Login</div>
+                  <div class="text-xs sm:text-sm font-bold text-ink truncate">${escapeHtml(acc.email)}</div>
+                </div>
+                <button onclick="copyText('${escapeHtml(acc.email)}', 'Email')" class="btn-tactile shrink-0 px-2.5 py-1.5 rounded-xl bg-white border-2 border-ink shadow-stickerSm text-xs font-extrabold hover:bg-stickyYellow">
+                  📋 Copy
+                </button>
+              </div>
+
+              <!-- Password Row -->
+              <div class="flex items-center justify-between gap-2 pt-2 border-t border-dashed border-ink/20">
+                <div class="min-w-0">
+                  <div class="text-[10px] font-extrabold uppercase text-ink/55">Password</div>
+                  <div class="text-xs sm:text-sm font-mono font-bold text-ink truncate">
+                    ${isShown ? escapeHtml(acc.password) : maskedPass}
+                  </div>
+                </div>
+                <div class="flex items-center gap-1.5 shrink-0">
+                  <button onclick="togglePasswordVisibility('${acc.id}')" class="btn-tactile px-2.5 py-1.5 rounded-xl bg-white border-2 border-ink shadow-stickerSm text-xs font-extrabold hover:bg-stickyYellow">
+                    ${isShown ? '🙈 Hide' : '👁️ Show'}
+                  </button>
+                  <button onclick="copyText('${escapeHtml(acc.password)}', 'Password')" class="btn-tactile px-2.5 py-1.5 rounded-xl bg-limeSticker border-2 border-ink shadow-stickerSm text-xs font-extrabold hover:brightness-95">
+                    📋 Copy
+                  </button>
+                </div>
+              </div>
+            </div>
+          </div>
+        `;
+      }).join('');
+    }
+
+    // =========================================================================
+    // 9. MODALS (ADD/EDIT CONTENT & ADD ACCOUNT)
+    // =========================================================================
+    function populateAccountDropdown() {
+      const selectEl = document.getElementById('form-account');
+      selectEl.innerHTML = accounts.map(acc => `
+        <option value="${acc.id}">[${escapeHtml(acc.platform)}] ${escapeHtml(acc.handle)}</option>
+      `).join('');
+    }
+
+    function renderModalStatusSelector(activeStatus) {
+      document.getElementById('form-status').value = activeStatus;
+      const container = document.getElementById('modal-status-selector');
+      const statuses = Object.keys(STATUS_CONFIG);
+
+      container.innerHTML = statuses.map(status => {
+        const cfg = STATUS_CONFIG[status];
+        const isSelected = activeStatus === status;
+        return `
+          <button
+            type="button"
+            onclick="renderModalStatusSelector('${status}')"
+            style="background-color: ${cfg.bg}; color: ${cfg.text}; border-color: ${isSelected ? '#1D2D44' : cfg.accent};"
+            class="btn-tactile flex items-center gap-1.5 px-3 py-2 rounded-xl border-2 text-xs font-extrabold transition-all ${isSelected ? 'shadow-stickerSm ring-2 ring-ink/30 scale-[1.02]' : 'opacity-80 hover:opacity-100'}"
+          >
+            <span class="w-2.5 h-2.5 rounded-full shrink-0" style="background-color: ${cfg.accent};"></span>
+            <span>${cfg.emoji} ${status}</span>
+          </button>
+        `;
+      }).join('');
+    }
+
+    function openContentModal(contentId = null, prefillDate = null) {
+      populateAccountDropdown();
+      const modal = document.getElementById('content-modal');
+      const deleteBtn = document.getElementById('btn-delete-content');
+
+      if (contentId) {
+        const item = contents.find(c => c.id === contentId);
+        if (!item) return;
+        document.getElementById('content-modal-title').textContent = 'Edit Detail Konten';
+        document.getElementById('form-content-id').value = item.id;
+        document.getElementById('form-account').value = item.accountId;
+        document.getElementById('form-date').value = item.date;
+        document.getElementById('form-title').value = item.title;
+        renderModalStatusSelector(item.status || 'Idea');
+        document.getElementById('form-ref-link').value = item.refLink || '';
+        document.getElementById('form-notes').value = item.notes || '';
+        document.getElementById('form-pub-link').value = item.pubLink || '';
+        deleteBtn.classList.remove('hidden');
+      } else {
+        document.getElementById('content-modal-title').textContent = 'Tambah Ide Konten Baru';
+        document.getElementById('form-content-id').value = '';
+        if (selectedAccountFilter !== 'ALL') {
+          document.getElementById('form-account').value = selectedAccountFilter;
+        } else if (selectedPlatformFilter !== 'ALL') {
+          const firstPlatAcc = accounts.find(a => a.platform === selectedPlatformFilter);
+          if (firstPlatAcc) document.getElementById('form-account').value = firstPlatAcc.id;
+        }
+        document.getElementById('form-date').value = prefillDate || `${currentYear}-${currentMonth}-12`;
+        document.getElementById('form-title').value = '';
+        renderModalStatusSelector('Idea');
+        document.getElementById('form-ref-link').value = '';
+        document.getElementById('form-notes').value = '';
+        document.getElementById('form-pub-link').value = '';
+        deleteBtn.classList.add('hidden');
+      }
+
+      modal.classList.remove('hidden');
+    }
+
+    function closeContentModal() {
+      document.getElementById('content-modal').classList.add('hidden');
+    }
+
+    function saveContent(event) {
+      event.preventDefault();
+      const id = document.getElementById('form-content-id').value;
+      const payload = {
+        accountId: document.getElementById('form-account').value,
+        date: document.getElementById('form-date').value,
+        title: document.getElementById('form-title').value.trim(),
+        status: document.getElementById('form-status').value,
+        refLink: document.getElementById('form-ref-link').value.trim(),
+        notes: document.getElementById('form-notes').value.trim(),
+        pubLink: document.getElementById('form-pub-link').value.trim(),
+      };
+
+      if (id) {
+        const idx = contents.findIndex(c => c.id === id);
+        if (idx !== -1) {
+          contents[idx] = { ...contents[idx], ...payload };
+        }
+        showToast('Perubahan konten tersimpan!');
+      } else {
+        contents.push({
+          id: 'cnt-' + Date.now(),
+          ...payload
+        });
+        showToast('Ide konten baru ditambahkan!');
+      }
+
+      saveToStorage();
+      closeContentModal();
+      renderAll();
+    }
+
+    function deleteCurrentContent() {
+      const id = document.getElementById('form-content-id').value;
+      if (!id) return;
+      contents = contents.filter(c => c.id !== id);
+      saveToStorage();
+      closeContentModal();
+      renderAll();
+      showToast('Ide konten dihapus.');
+    }
+
+    function openAccountModal() {
+      document.getElementById('account-form').reset();
+      document.getElementById('account-modal').classList.remove('hidden');
+    }
+
+    function closeAccountModal() {
+      document.getElementById('account-modal').classList.add('hidden');
+    }
+
+    function saveAccount(event) {
+      event.preventDefault();
+      const newAcc = {
+        id: 'acc-' + Date.now(),
+        platform: document.getElementById('acc-form-platform').value,
+        handle: document.getElementById('acc-form-handle').value.trim(),
+        email: document.getElementById('acc-form-email').value.trim(),
+        password: document.getElementById('acc-form-password').value,
+        note: document.getElementById('acc-form-note').value.trim()
+      };
+
+      accounts.push(newAcc);
+      saveToStorage();
+      closeAccountModal();
+      renderAll();
+      showToast(`Akun ${newAcc.handle} berhasil disimpan ke Vault!`);
+    }
+
+    // =========================================================================
+    // 10. TOAST & INITIALIZATION
+    // =========================================================================
+    let toastTimer = null;
+    function showToast(message) {
+      const box = document.getElementById('toast-box');
+      document.getElementById('toast-text').textContent = message;
+      box.classList.remove('hidden');
+      if (toastTimer) clearTimeout(toastTimer);
+      toastTimer = setTimeout(() => {
+        box.classList.add('hidden');
+      }, 2600);
+    }
+
+    function renderAll() {
+      renderGreeting();
+      updateStats();
+      renderAccountFilterBar();
+      renderTracker();
+      renderCalendar();
+      if (activeTab === 'vault') renderVault();
+    }
+
+    window.addEventListener('DOMContentLoaded', () => {
+      renderAll();
+      if (sheetsApiUrl) {
+        pullFromCloud(true);
+      } else {
+        updateSyncBadge('local', 'Local Mode');
+      }
+    });
+  </script>
+</body>
+</html>
