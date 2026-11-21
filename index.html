@@ -846,6 +846,9 @@
     let visiblePasswords = {};
     let sheetsApiUrl = '';
     let isSyncing = false;
+    let lastLocalMutationAt = 0;
+    let pushDebounceTimer = null;
+    let autoSyncInterval = null;
 
     function updateSyncBadge(state, label) {
       const dot = document.getElementById('sync-status-dot');
@@ -880,7 +883,7 @@
     async function pushToCloud() {
       if (!sheetsApiUrl) return;
       isSyncing = true;
-      updateSyncBadge('syncing', 'Menyimpan ke Sheets...');
+      updateSyncBadge('syncing', 'Menyimpan...');
       try {
         const res = await fetch(sheetsApiUrl, {
           method: 'POST',
@@ -889,7 +892,8 @@
         });
         const data = await res.json();
         if (data.status === 'success') {
-          updateSyncBadge('synced', 'Synced ☁️');
+          lastLocalMutationAt = Date.now();
+          updateSyncBadge('synced', 'Synced ⚡');
         } else {
           updateSyncBadge('error', 'Sync Gagal');
         }
@@ -906,10 +910,16 @@
         updateSyncBadge('local', 'Local Mode');
         return;
       }
+      // Hindari menimpa data jika sedang menyimpan atau baru saja mengedit (< 4 detik lalu)
+      if (isSyncing) return;
+      if (silent && Date.now() - lastLocalMutationAt < 4000) return;
+
       isSyncing = true;
-      updateSyncBadge('syncing', 'Sinkronisasi...');
+      if (!silent) updateSyncBadge('syncing', 'Sinkronisasi...');
       try {
-        const res = await fetch(sheetsApiUrl);
+        // Tambahkan timestamp cache-buster agar browser & Safari tidak men-cache respons lama
+        const sep = sheetsApiUrl.includes('?') ? '&' : '?';
+        const res = await fetch(`${sheetsApiUrl}${sep}_t=${Date.now()}`, { cache: 'no-store' });
         const data = await res.json();
         if (data.status === 'success') {
           // Jika sheet masih kosong saat pertama kali dihubungkan, unggah data lokal saat ini ke sheet
@@ -917,16 +927,27 @@
             await pushToCloud();
             if (!silent) showToast('Spreadsheet kosong terdeteksi — data awal diunggah ke Sheets!');
           } else {
+            let hasChanged = false;
             if (Array.isArray(data.accounts) && data.accounts.length > 0) {
-              accounts = data.accounts;
-              localStorage.setItem(STORAGE_KEY_ACCOUNTS, JSON.stringify(accounts));
+              const newAccStr = JSON.stringify(data.accounts);
+              if (newAccStr !== JSON.stringify(accounts)) {
+                accounts = data.accounts;
+                localStorage.setItem(STORAGE_KEY_ACCOUNTS, newAccStr);
+                hasChanged = true;
+              }
             }
             if (Array.isArray(data.contents)) {
-              contents = data.contents;
-              localStorage.setItem(STORAGE_KEY_CONTENTS, JSON.stringify(contents));
+              const newCntStr = JSON.stringify(data.contents);
+              if (newCntStr !== JSON.stringify(contents)) {
+                contents = data.contents;
+                localStorage.setItem(STORAGE_KEY_CONTENTS, newCntStr);
+                hasChanged = true;
+              }
             }
-            renderAll();
-            updateSyncBadge('synced', 'Synced ☁️');
+            if (hasChanged) {
+              renderAll();
+            }
+            updateSyncBadge('synced', 'Synced ⚡');
             if (!silent) showToast('Data terbaru ditarik dari Google Sheets!');
           }
         } else {
@@ -941,6 +962,28 @@
         isSyncing = false;
       }
     }
+
+    function startRealtimeAutoSync() {
+      if (autoSyncInterval) clearInterval(autoSyncInterval);
+      // Cek perubahan dari perangkat lain setiap 6 detik secara otomatis di background
+      autoSyncInterval = setInterval(() => {
+        if (sheetsApiUrl && !document.hidden) {
+          pullFromCloud(true);
+        }
+      }, 6000);
+    }
+
+    // Langsung sinkron seketika saat tab kembali dibuka / beralih dari HP ke Laptop
+    document.addEventListener('visibilitychange', () => {
+      if (!document.hidden && sheetsApiUrl) {
+        pullFromCloud(true);
+      }
+    });
+    window.addEventListener('focus', () => {
+      if (sheetsApiUrl) {
+        pullFromCloud(true);
+      }
+    });
 
     function manualCloudPull() {
       if (!sheetsApiUrl) {
@@ -965,6 +1008,7 @@
     }
 
     function saveToStorage() {
+      lastLocalMutationAt = Date.now();
       try {
         localStorage.setItem(STORAGE_KEY_ACCOUNTS, JSON.stringify(accounts));
         localStorage.setItem(STORAGE_KEY_CONTENTS, JSON.stringify(contents));
@@ -972,7 +1016,11 @@
         console.warn('Gagal menyimpan ke localStorage:', e);
       }
       updateStats();
-      pushToCloud();
+      updateSyncBadge('syncing', 'Menyimpan...');
+      if (pushDebounceTimer) clearTimeout(pushDebounceTimer);
+      pushDebounceTimer = setTimeout(() => {
+        pushToCloud();
+      }, 250);
     }
 
     loadFromStorage();
@@ -1745,6 +1793,7 @@
       renderAll();
       if (sheetsApiUrl) {
         pullFromCloud(true);
+        startRealtimeAutoSync();
       } else {
         updateSyncBadge('local', 'Local Mode');
       }
